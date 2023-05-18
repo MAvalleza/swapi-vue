@@ -1,8 +1,12 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import HomePage from './pages/HomePage.vue'
+
+// Pinia
+const pinia = createPinia()
 
 // Vuetify
 import 'vuetify/styles'
@@ -16,7 +20,6 @@ const vuetify = createVuetify({
 })
 
 // Vue Router
-
 const routes = [
   { path: '/', component: HomePage }
 ];
@@ -28,7 +31,8 @@ const router = createRouter({
 
 const app = createApp(App)
 
-app.use(vuetify)
+app.use(pinia)
 app.use(router)
+app.use(vuetify)
 
 app.mount('#app')
