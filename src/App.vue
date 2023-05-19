@@ -1,5 +1,12 @@
+<script setup>
+import Navbar from '@/components/commons/Navbar.vue'
+</script>
+
 <template lang="pug">
-div
-  router-view
+v-app
+  navbar
+
+  v-main
+    router-view
 </template>
 
