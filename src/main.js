@@ -3,7 +3,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
+import DetailsPage from './pages/DetailsPage.vue'
 import HomePage from './pages/HomePage.vue'
+import ListPage from './pages/ListPage.vue'
 
 // Pinia
 const pinia = createPinia()
@@ -21,7 +23,21 @@ const vuetify = createVuetify({
 
 // Vue Router
 const routes = [
-  { path: '/', component: HomePage }
+  { 
+    path: '/',
+    name: 'index',
+    component: HomePage,
+  },
+  {
+    path: '/list/:entityType',
+    name: 'list',
+    component: ListPage,
+  },
+  {
+    path: '/details/:entityType/:id',
+    name: 'details',
+    component: DetailsPage
+  }
 ];
 
 const router = createRouter({
