@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { useEntityTypesStore } from '../stores/entityTypes'
+import { useEntityTypesStore } from '@/stores/entityTypes'
 
 const entityTypesStore = useEntityTypesStore()
 const { entityTypes } = storeToRefs(entityTypesStore)
