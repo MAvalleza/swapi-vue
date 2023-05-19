@@ -1,14 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useEntityTypesStore } from '../stores/entityTypes'
 
-const entityTypes = ref([
-  'Planets',
-  'People',
-  'Films',
-  'Starships',
-  'Vehicles',
-  'Species',
-])
+const entityTypesStore = useEntityTypesStore()
+const { entityTypes } = storeToRefs(entityTypesStore)
 </script>
 
 <template lang="pug">
