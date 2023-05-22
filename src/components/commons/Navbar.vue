@@ -17,7 +17,7 @@ v-navigation-drawer(
 	location="right"
 	temporary
 )
-	v-list-item(title="SWAPI Portal")
+	v-list-item(title="SWAPI Portal" :to="{ name: 'index' }")
 
 	v-divider
 
@@ -26,5 +26,6 @@ v-navigation-drawer(
 			v-for="(type, key) in entityTypes"
 			:key="key"
 			:title="type.text"
+			:to="{ name: 'list', params: { entityType: type.value } }"
 		)
 </template>

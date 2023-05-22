@@ -11,6 +11,9 @@ v-container
   p.my-10 A collection of Star Wars characters, films, and more!
 
   v-list(v-for="(type, key) in entityTypes")  
-    v-list-item(:key="key")
+    v-list-item(
+      :key="key"
+      :to="{ name: 'list', params: { entityType: type.value } }"
+    )
       v-list-item-title {{ type.text }}
 </template>
