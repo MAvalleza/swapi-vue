@@ -1,9 +1,8 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { useEntityTypesStore } from '@/stores/entityTypes'
+import { ref } from 'vue'
+import { ENTITY_TYPES } from '@/constants/entityTypes'
 
-const entityTypesStore = useEntityTypesStore()
-const { entityTypes } = storeToRefs(entityTypesStore)
+const entityTypes = ref(ENTITY_TYPES)
 </script>
 
 <template lang="pug">
@@ -13,5 +12,5 @@ v-container
 
   v-list(v-for="(type, key) in entityTypes")  
     v-list-item(:key="key")
-      v-list-item-title {{ type }}
+      v-list-item-title {{ type.text }}
 </template>

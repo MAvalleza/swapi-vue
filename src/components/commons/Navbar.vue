@@ -1,11 +1,8 @@
 <script setup>
-import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import { useEntityTypesStore } from '@/stores/entityTypes'
+import { ENTITY_TYPES } from '@/constants/entityTypes'
 
-const entityTypesStore = useEntityTypesStore()
-const { entityTypes } = storeToRefs(entityTypesStore)
-
+const entityTypes = ref(ENTITY_TYPES)
 const drawer = ref(false)
 
 </script>
@@ -28,6 +25,6 @@ v-navigation-drawer(
 		v-list-item(
 			v-for="(type, key) in entityTypes"
 			:key="key"
-			:title="type"
+			:title="type.text"
 		)
 </template>
