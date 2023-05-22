@@ -15,7 +15,6 @@ export const useEntities = defineStore('entities', {
   }),
   actions: {
     async fetchEntities(entityType, options = {}) {
-      console.log('store invoked')
       if (!entityType) return [];
   
       const { page, search } = options
@@ -32,11 +31,9 @@ export const useEntities = defineStore('entities', {
       const data = await response.json()
   
       this[entityType] = data.results || []
-      console.log('entityType', this[entityType])
 
       // Assign to `entities` so this will be displayed on the list page
       this.entities = this[entityType]
-      console.log('entities', this.entities)
     }
   },
 })

@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const entitiesStore = useEntities()
-const { entities, people } = storeToRefs(entitiesStore)
+const { entities } = storeToRefs(entitiesStore)
 
 const entityType = ref(route.params.entityType)
 
@@ -15,6 +15,10 @@ async function fetchEntities(entityType) {
 }
 
 onMounted(() => {
+  // Reset the list
+  entitiesStore.$reset
+
+  // Fetch the data using the route params
   fetchEntities(entityType)
 })
 </script>
