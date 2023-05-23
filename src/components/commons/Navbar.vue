@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-import { ENTITY_TYPES } from '@/constants/entityTypes'
+import { CATEGORIES } from '@/constants/categories'
 
-const entityTypes = ref(ENTITY_TYPES)
+const categories = ref(CATEGORIES)
 const drawer = ref(false)
 
 </script>
@@ -23,9 +23,9 @@ v-navigation-drawer(
 
 	v-list(density="compact" nav)
 		v-list-item(
-			v-for="(type, key) in entityTypes"
+			v-for="(category, key) in categories"
 			:key="key"
-			:title="type.text"
-			:to="{ name: 'list', params: { entityType: type.value } }"
+			:title="category.text"
+			:to="{ name: 'list', params: { category: category.value } }"
 		)
 </template>

@@ -14,8 +14,8 @@ export const useEntities = defineStore('entities', {
     vehicles: [],
   }),
   actions: {
-    async fetchEntities(entityType, options = {}) {
-      if (!entityType) return [];
+    async fetchEntities(category, options = {}) {
+      if (!category) return [];
   
       const { page, search } = options
       // Remove nullish attributes and turn to query string
@@ -27,13 +27,13 @@ export const useEntities = defineStore('entities', {
         skipEmptyString: true
       })
   
-      const response = await fetch(`${SWAPI_BASE_URL}/${entityType}/${params}`)
+      const response = await fetch(`${SWAPI_BASE_URL}/${category}/${params}`)
       const data = await response.json()
   
-      this[entityType] = data.results || []
+      this[category] = data.results || []
 
       // Assign to `entities` so this will be displayed on the list page
-      this.entities = this[entityType]
+      this.entities = this[category]
     }
   },
 })

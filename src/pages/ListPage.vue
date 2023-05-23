@@ -8,10 +8,10 @@ const route = useRoute()
 const entitiesStore = useEntities()
 const { entities } = storeToRefs(entitiesStore)
 
-const entityType = ref(route.params.entityType)
+const category = ref(route.params.category)
 
-async function fetchEntities(entityType) {
-  await entitiesStore.fetchEntities(entityType.value)
+async function fetchEntities(category) {
+  await entitiesStore.fetchEntities(category.value)
 }
 
 onMounted(() => {
@@ -19,14 +19,14 @@ onMounted(() => {
   entitiesStore.$reset
 
   // Fetch the data using the route params
-  fetchEntities(entityType)
+  fetchEntities(category)
 })
 </script>
 
 <template lang="pug">
 v-container
   h1 List Page
-  p {{ entityType }}
+  p {{ category }}
 
   pre {{ entities }}
 </template>

@@ -1,16 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { ENTITY_TYPES } from '@/constants/entityTypes'
+import { CATEGORY_VALUES } from '@/constants/categories'
 import DetailsPage from '@/pages/DetailsPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import ListPage from '@/pages/ListPage.vue'
 
 /**
- * Entity type route guard
+ * Category route guard
  * 
- * Checks if the entityType param is valid
+ * Checks if the category param is valid
  */
-function validateEntityType(entityType) {
-  return ENTITY_TYPES.map(type => type.value).includes(entityType)
+function validateCategory(category) {
+  return CATEGORY_VALUES.includes(category)
 }
 const routes = [
   { 
@@ -19,19 +19,19 @@ const routes = [
     component: HomePage,
   },
   {
-    path: '/list/:entityType',
+    path: '/list/:category',
     name: 'list',
     component: ListPage,
     beforeEnter: (to, from) => {
-      return validateEntityType(to.params.entityType)
+      return validateCategory(to.params.category)
     }
   },
   {
-    path: '/details/:entityType/:id',
+    path: '/details/:category/:id',
     name: 'details',
     component: DetailsPage,
     beforeEnter: (to, from) => {
-      return validateEntityType(to.params.entityType)
+      return validateCategory(to.params.category)
     }
   }
 ];

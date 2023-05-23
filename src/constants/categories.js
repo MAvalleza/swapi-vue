@@ -1,4 +1,4 @@
-export const ENTITY_TYPES = [
+export const CATEGORIES = [
   { text: 'Planets', value: 'planets' },
   { text: 'People', value: 'people' },
   { text: 'Films', value: 'films' },
@@ -6,3 +6,5 @@ export const ENTITY_TYPES = [
   { text: 'Vehicles', value: 'vehicles' },
   { text: 'Species', value: 'species' },
 ]
+
+export const CATEGORY_VALUES = CATEGORIES.map(category => category.value)
