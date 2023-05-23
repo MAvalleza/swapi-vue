@@ -1,32 +1,51 @@
 <script setup>
 import { useEntities } from '@/stores/entities'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { inject, onMounted, provide, ref } from 'vue'
+import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import EntitiesList from '@/components/entities-list/EntitiesList.vue'
 
 const route = useRoute()
 const entitiesStore = useEntities()
 const { entities } = storeToRefs(entitiesStore)
 
-const category = ref(route.params.category)
+let category = ref(route.params.category)
+let loading = ref(false)
 
-async function fetchEntities(category) {
+provide('category', category)
+
+async function initialize() {
+  loading.value = true
+  // Reset the list
+  entitiesStore.$reset
+  // Fetch the data using the route params
   await entitiesStore.fetchEntities(category.value)
+
+  loading.value = false
 }
 
 onMounted(() => {
-  // Reset the list
-  entitiesStore.$reset
+  initialize()
+})
 
-  // Fetch the data using the route params
-  fetchEntities(category)
+onBeforeRouteUpdate((to, from) => {
+  category.value = to.params.category
+  initialize()
 })
 </script>
 
 <template lang="pug">
-v-container
-  h1 List Page
-  p {{ category }}
+v-container.container
+  h1.text-h3.text-capitalize.text-left {{ category }}
 
-  pre {{ entities }}
+  v-container.text-center
+    v-progress-circular(v-if="loading" indeterminate color="primary")
+    template(v-else)
+      entities-list(:entities="entities")
 </template>
+
+<style scoped>
+.container {
+  width: 100vw;
+}
+</style>
