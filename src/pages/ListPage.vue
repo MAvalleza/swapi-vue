@@ -1,7 +1,7 @@
 <script setup>
 import { useEntities } from '@/stores/entities'
 import { storeToRefs } from 'pinia'
-import { onMounted, provide, ref } from 'vue'
+import { onMounted, provide, reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import EntitiesList from '@/components/entities-list/EntitiesList.vue'
 
@@ -12,16 +12,41 @@ const { entities } = storeToRefs(entitiesStore)
 let category = ref(route.params.category)
 let loading = ref(false)
 
+const initialParams = {
+  page: 1
+}
+
+let fetchParams = reactive(initialParams)
+
 provide('category', category)
 
+// Initializer function
 async function initialize() {
   loading.value = true
-  // Reset the list
+
+  // Reset the list since this component is reusable
   entitiesStore.$reset
-  // Fetch the data using the route params
-  await entitiesStore.fetchEntities(category.value)
+  fetchParams = reactive(initialParams)
+
+  // Fetch the data
+  fetchEntities()
 
   loading.value = false
+}
+
+// Invokes store action
+async function fetchEntities() {
+  await entitiesStore.fetchEntities(category.value, {
+    page: fetchParams.page
+  })
+}
+
+// Loads next set of entities for infinite scrolling purposes
+async function loadEntities() {
+  // Increment page
+  fetchParams.page += 1
+  // Fetch next data
+  fetchEntities()
 }
 
 onMounted(() => {
@@ -40,7 +65,7 @@ v-container.container
 
   v-progress-circular(v-if="loading" indeterminate color="primary")
   template(v-else)
-    entities-list(:entities="entities")
+    entities-list(:entities="entities" @load="loadEntities")
 </template>
 
 <style scoped>

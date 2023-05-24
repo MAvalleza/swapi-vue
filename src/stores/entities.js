@@ -27,10 +27,10 @@ export const useEntities = defineStore('entities', {
         skipEmptyString: true
       })
   
-      const response = await fetch(`${SWAPI_BASE_URL}/${category}/${params}`)
+      const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
       const data = await response.json()
   
-      this[category] = data.results || []
+      this[category].push(...(data.results || []))
 
       // Assign to `entities` so this will be displayed on the list page
       this.entities = this[category]
