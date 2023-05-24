@@ -13,20 +13,47 @@ const props = defineProps({
 })
 
 const CARD_DATA_MAPPINGS = {
-  people: pick(props.data, ['name', 'birth_year', 'gender']),
-  planets: pick(props.data, ['name', 'terrain', 'population']),
-  films: pick(props.data, ['title', 'director', 'release_date']),
-  starships: pick(props.data, ['name', 'manufacturer', 'cost_in_credits']),
-  vehicles: pick(props.data, ['name', 'manufacturer', 'cost_in_credits']),
-  species: pick(props.data, ['name', 'classification', 'designation']),
+  people: {
+    content: pick(props.data, ['birth_year', 'gender']),
+    icon: '',
+  },
+  planets: {
+    content: pick(props.data, ['terrain', 'population']),
+    icon: '',
+  },
+  films: {
+    content: pick(props.data, ['director', 'release_date']),
+    icon: '',
+  },
+  starships: {
+    content: pick(props.data, ['manufacturer', 'cost_in_credits']),
+    icon: '',
+  },
+  vehicles: {
+    content: pick(props.data, ['manufacturer', 'cost_in_credits']),
+    icon: '',
+  },
+  species: {
+    content: pick(props.data, ['classification', 'designation']),
+    icon: '',
+  }
 }
 
-const CARD_DATA = CARD_DATA_MAPPINGS[category]
+const CARD_DATA = CARD_DATA_MAPPINGS[category.value].content
+const CARD_TITLE = props.data.name || props.data.title
+
+function formatAttribute(attr) {
+  return attr.replace(/[_-]/g, " ")
+}
 </script>
 
 <template lang="pug">
 v-card
-  v-card-item
+  v-card-item.text-left
     v-card-subtitle.text-uppercase {{ category }}
-    pre {{ props.data }}
+    v-card-title.text-capitalize {{ CARD_TITLE }}
+  v-card-text.text-left
+    p(v-for="(value, attr, index) in CARD_DATA" :key="index")
+      strong.font-weight-medium.text-capitalize {{ formatAttribute(attr) }}:&nbsp;
+      span.text-capitalize {{ value }}
 </template>

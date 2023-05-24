@@ -1,7 +1,7 @@
 <script setup>
 import { useEntities } from '@/stores/entities'
 import { storeToRefs } from 'pinia'
-import { inject, onMounted, provide, ref } from 'vue'
+import { onMounted, provide, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import EntitiesList from '@/components/entities-list/EntitiesList.vue'
 
@@ -38,10 +38,9 @@ onBeforeRouteUpdate((to, from) => {
 v-container.container
   h1.text-h3.text-capitalize.text-left {{ category }}
 
-  v-container.text-center
-    v-progress-circular(v-if="loading" indeterminate color="primary")
-    template(v-else)
-      entities-list(:entities="entities")
+  v-progress-circular(v-if="loading" indeterminate color="primary")
+  template(v-else)
+    entities-list(:entities="entities")
 </template>
 
 <style scoped>
