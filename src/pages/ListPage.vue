@@ -1,5 +1,6 @@
 <script setup>
 import { useEntities } from '@/stores/entities'
+import debounce from 'lodash-es/debounce'
 import { storeToRefs } from 'pinia'
 import { onMounted, provide, reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
@@ -22,24 +23,27 @@ let fetchParams = reactive(initialParams)
 
 provide('category', category)
 
-// Initializer function
-async function initialize() {
+// Loading wrapper function
+async function setLoading(func) {
   loading.value = true
+  await func()
+  loading.value = false
+}
 
+// Initializer function
+function initialize() {
   // Reset the params since this component is reusable
   fetchParams = reactive(initialParams)
 
   // Fetch the data
-  await fetchEntities()
-
-  loading.value = false
+  // setLoading(fetchEntities)
+  fetchEntities()
 }
 
 // Invokes store action
 async function fetchEntities() {
-  await entitiesStore.fetchEntities(category.value, {
-    page: fetchParams.page
-  })
+  console.log('i will fetch', fetchParams)
+  await entitiesStore.fetchEntities(category.value, { ...fetchParams })
 }
 
 // Loads next set of entities for infinite scrolling purposes
@@ -48,6 +52,15 @@ async function loadEntities() {
   fetchParams.page += 1
   // Fetch next data
   fetchEntities()
+}
+
+// TODO: FIX SEARCH
+function searchEntities() {
+  console.log('emitted', fetchParams.search)
+  const search = debounce(fetchEntities, 500)
+
+  // Invoke search
+  setLoading(search)
 }
 
 onMounted(() => {
@@ -65,7 +78,10 @@ v-container.container
   h1.text-h4.text-capitalize.text-left {{ category }}
 
   div.my-5
-    entities-search-bar
+    entities-search-bar(
+      v-model="fetchParams.search"
+      @search="searchEntities"
+    )
 
   div(v-if="loading").text-center
     v-progress-circular(indeterminate color="primary")

@@ -6,6 +6,7 @@ const SWAPI_BASE_URL = import.meta.env.VITE_SWAPI_BASE_URL
 export const useEntities = defineStore('entities', {
   state: () => ({
     entities: [],
+    filteredEntities: [],
     films: [],
     people: [],
     planets: [],
@@ -27,18 +28,34 @@ export const useEntities = defineStore('entities', {
         skipEmptyString: true
       })
   
-      // Use cached data if available and when there is no searchText
+      // Use cached data if available and when there is no search text
       if (this[category].length && !search) {
         this.entities = this[category]
         return
       }
 
+      // Call the API
       const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
       const data = await response.json()
-  
-      this[category].push(...(data.results || []))
+      const results = data.results || []
 
-      // Assign to `entities` so this will be displayed on the list page
+      if (search) {
+        // We add to array since we want to implement infinite scrolling in search results too
+        if (page > 1) {
+          this.filteredEntities.push(...results)
+        } else {
+          this.filteredEntities = results
+        }
+
+        this.entities = this.filteredEntities
+        return
+      }
+
+      // Cache the results
+      // Note: We don't cache search results since we do not save search text across categories
+      this[category].push(...results)
+
+      // Assign to `entities` so these will be displayed on the list page
       this.entities = this[category]
     }
   },
