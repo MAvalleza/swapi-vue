@@ -54,7 +54,7 @@ async function loadEntities() {
   fetchEntities()
 }
 
-// TODO: FIX SEARCH
+// TODO: FIX SEARCH AND SWITCHING OF SCREENS
 function searchEntities() {
   console.log('emitted', fetchParams.search)
   const search = debounce(fetchEntities, 500)
