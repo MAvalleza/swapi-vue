@@ -1,6 +1,6 @@
 <script setup>
 import pick from 'lodash-es/pick'
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 
 let category = inject('category')
 
@@ -39,8 +39,8 @@ const CARD_DATA_MAPPINGS = {
   }
 }
 
-const CARD_DATA = CARD_DATA_MAPPINGS[category.value].content
-const CARD_TITLE = props.data.name || props.data.title
+let CARD_DATA = ref(CARD_DATA_MAPPINGS[category.value].content)
+let CARD_TITLE = ref(props.data.name || props.data.title)
 
 function formatAttribute(attr) {
   return attr.replace(/[_-]/g, " ")

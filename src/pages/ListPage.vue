@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted, provide, reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import EntitiesList from '@/components/entities-list/EntitiesList.vue'
+import EntitiesSearchBar from '@/components/entities-list/EntitiesSearchBar.vue'
 
 const route = useRoute()
 const entitiesStore = useEntities()
@@ -29,7 +30,7 @@ async function initialize() {
   fetchParams = reactive(initialParams)
 
   // Fetch the data
-  fetchEntities()
+  await fetchEntities()
 
   loading.value = false
 }
@@ -61,9 +62,13 @@ onBeforeRouteUpdate((to, from) => {
 
 <template lang="pug">
 v-container.container
-  h1.text-h3.text-capitalize.text-left {{ category }}
+  h1.text-h4.text-capitalize.text-left {{ category }}
 
-  v-progress-circular(v-if="loading" indeterminate color="primary")
+  div.my-5
+    entities-search-bar
+
+  div(v-if="loading").text-center
+    v-progress-circular(indeterminate color="primary")
   template(v-else)
     entities-list(:entities="entities" @load="loadEntities")
 </template>
