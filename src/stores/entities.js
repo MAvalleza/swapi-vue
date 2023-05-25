@@ -27,6 +27,12 @@ export const useEntities = defineStore('entities', {
         skipEmptyString: true
       })
   
+      // Use cached data if available and when there is no searchText
+      if (this[category].length && !search) {
+        this.entities = this[category]
+        return
+      }
+
       const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
       const data = await response.json()
   

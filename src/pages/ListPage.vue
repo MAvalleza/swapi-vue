@@ -14,7 +14,8 @@ let category = ref(route.params.category)
 let loading = ref(false)
 
 const initialParams = {
-  page: 1
+  page: 1,
+  search: null
 }
 
 let fetchParams = reactive(initialParams)
@@ -25,8 +26,7 @@ provide('category', category)
 async function initialize() {
   loading.value = true
 
-  // Reset the list since this component is reusable
-  entitiesStore.$reset
+  // Reset the params since this component is reusable
   fetchParams = reactive(initialParams)
 
   // Fetch the data
