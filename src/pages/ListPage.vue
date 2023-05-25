@@ -36,8 +36,7 @@ function initialize() {
   fetchParams = reactive(initialParams)
 
   // Fetch the data
-  // setLoading(fetchEntities)
-  fetchEntities()
+  setLoading(fetchEntities)
 }
 
 // Invokes store action
