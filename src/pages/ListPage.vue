@@ -1,9 +1,10 @@
 <script setup>
-import { useEntities } from '@/stores/entities'
 import debounce from 'lodash-es/debounce'
 import { storeToRefs } from 'pinia'
 import { onMounted, provide, reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { hasNextPage, nextPage } from '@/helpers/pagination'
+import { useEntities } from '@/stores/entities'
 import EntitiesList from '@/components/entities-list/EntitiesList.vue'
 import EntitiesSearchBar from '@/components/entities-list/EntitiesSearchBar.vue'
 
@@ -13,6 +14,10 @@ const { entities } = storeToRefs(entitiesStore)
 
 let category = ref(route.params.category)
 let loading = ref(false)
+let total = reactive({
+  current: 0,
+  overall: 0,
+})
 
 const initialParams = {
   page: 1,
@@ -42,13 +47,19 @@ function initialize() {
 // Invokes store action
 async function fetchEntities() {
   console.log('i will fetch', fetchParams)
-  await entitiesStore.fetchEntities(category.value, { ...fetchParams })
+  const { data, totalCount } = await entitiesStore.fetchEntities(category.value, { ...fetchParams })
+
+  total.current = data.length,
+    total.overall = totalCount
 }
 
 // Loads next set of entities for infinite scrolling purposes
 async function loadEntities() {
+  // Don't run if no next page
+  if (!hasNextPage(total.overall, total.current)) return
+
   // Increment page
-  fetchParams.page += 1
+  fetchParams.page = nextPage(total.current, 10)
   // Fetch next data
   fetchEntities()
 }

@@ -3,22 +3,44 @@ import queryString from 'query-string'
 
 const SWAPI_BASE_URL = import.meta.env.VITE_SWAPI_BASE_URL
 
+const BASE_DATA = {
+  data: [],
+  total: 0,
+}
+
 export const useEntities = defineStore('entities', {
   state: () => ({
     entities: [],
-    filteredEntities: [],
-    films: [],
-    people: [],
-    planets: [],
-    species: [],
-    starships: [],
-    vehicles: [],
+    totalCount: 0,
+    films: { ...BASE_DATA },
+    people: { ...BASE_DATA },
+    planets: { ...BASE_DATA },
+    species: { ...BASE_DATA },
+    starships: { ...BASE_DATA },
+    vehicles: { ...BASE_DATA },
   }),
   actions: {
     async fetchEntities(category, options = {}) {
       if (!category) return [];
   
       const { page, search } = options
+
+      // First page load (usually when switching to new screen)
+      const isInitialLoad = !search && page === 1
+
+      // Return function
+      const mapReturnData = () => ({
+        data: this.entities,
+        totalCount: this.totalCount
+      })
+  
+      // Use cached data if available and when there is no search text
+      if (this[category].data.length && isInitialLoad) {
+        this.entities = this[category].data
+        this.totalCount = this[category].total
+        return mapReturnData()
+      }
+
       // Remove nullish attributes and turn to query string
       const params = queryString.stringify({
         page,
@@ -27,36 +49,34 @@ export const useEntities = defineStore('entities', {
         skipNull: true,
         skipEmptyString: true
       })
-  
-      // Use cached data if available and when there is no search text
-      if (this[category].length && !search) {
-        this.entities = this[category]
-        return
-      }
 
       // Call the API
       const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
       const data = await response.json()
       const results = data.results || []
+      this.totalCount = data.count
 
       if (search) {
+        let filteredEntities = []
         // We add to array since we want to implement infinite scrolling in search results too
         if (page > 1) {
-          this.filteredEntities.push(...results)
+          filteredEntities.push(...results)
         } else {
-          this.filteredEntities = results
+          filteredEntities = results
         }
 
-        this.entities = this.filteredEntities
-        return
+        this.entities = filteredEntities
+        return mapReturnData()
       }
 
       // Cache the results
       // Note: We don't cache search results since we do not save search text across categories
-      this[category].push(...results)
+      this[category].data.push(...results)
+      this[category].total = data.count
 
       // Assign to `entities` so these will be displayed on the list page
-      this.entities = this[category]
+      this.entities = this[category].data
+      return mapReturnData()
     }
   },
 })
