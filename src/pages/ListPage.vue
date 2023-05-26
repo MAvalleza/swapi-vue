@@ -14,17 +14,20 @@ const { entities } = storeToRefs(entitiesStore)
 
 let category = ref(route.params.category)
 let loading = ref(false)
-let total = reactive({
-  current: 0,
-  overall: 0,
-})
 
-const initialParams = {
-  page: 1,
-  search: null
+const initial = {
+  params: {
+    page: 1,
+    search: null
+  },
+  total: {
+    current: 0,
+    overall: 0,
+  },
 }
 
-let fetchParams = reactive(initialParams)
+let fetchParams = reactive({ ...initial.params })
+let total = reactive({ ...initial.total })
 
 provide('category', category)
 
@@ -38,7 +41,8 @@ async function setLoading(func) {
 // Initializer function
 function initialize() {
   // Reset the params since this component is reusable
-  fetchParams = reactive(initialParams)
+  fetchParams = reactive({ ...initial.params })
+  total = reactive({ ...initial.total })
 
   // Fetch the data
   setLoading(fetchEntities)
