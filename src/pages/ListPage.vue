@@ -49,8 +49,8 @@ async function fetchEntities() {
   console.log('i will fetch', fetchParams)
   const { data, totalCount } = await entitiesStore.fetchEntities(category.value, { ...fetchParams })
 
-  total.current = data.length,
-    total.overall = totalCount
+  total.current = data.length
+  total.overall = totalCount
 }
 
 // Loads next set of entities for infinite scrolling purposes
