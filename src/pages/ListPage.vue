@@ -50,14 +50,17 @@ function initialize() {
 
 // Invokes store action
 async function fetchEntities() {
-  const { data, totalCount } = await entitiesStore.fetchEntities(category.value, { ...fetchParams })
+  const { currentPage, data, totalCount } = await entitiesStore.fetchEntities(category.value, { ...fetchParams })
+
+  // Re-assigning page to keep track in search mode
+  fetchParams.page = currentPage
 
   total.current = data.length
   total.overall = totalCount
 }
 
 // Loads next set of entities for infinite scrolling purposes
-async function loadEntities() {
+async function loadNextEntities() {
   // Don't run if no next page
   if (!hasNextPage(total.overall, total.current)) return
 
@@ -70,6 +73,13 @@ async function loadEntities() {
 // TODO: FIX SEARCH AND SWITCHING OF SCREENS
 function searchEntities() {
   console.log('emitted', fetchParams.search)
+
+  // If no search text, return to initial data
+  if (!fetchParams.search) {
+    entitiesStore.clearSearchData()
+    return initialize()
+  }
+
   const search = debounce(fetchEntities, 500)
 
   // Invoke search
@@ -99,7 +109,7 @@ v-container.container
   div(v-if="loading").text-center
     v-progress-circular(indeterminate color="primary")
   template(v-else)
-    entities-list(:entities="entities" @load="loadEntities")
+    entities-list(:entities="entities" @load="loadNextEntities")
 </template>
 
 <style scoped>

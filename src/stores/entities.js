@@ -1,11 +1,11 @@
+import isEmpty from 'lodash-es/isEmpty'
 import { defineStore } from 'pinia'
-import queryString from 'query-string'
-
-const SWAPI_BASE_URL = import.meta.env.VITE_SWAPI_BASE_URL
+import { fetchEntities } from '@/webservices/entitiesWebservice'
 
 export const useEntities = defineStore('entities', {
   state: () => ({
     entities: [],
+    filteredEntities: [],
     totalCount: 0,
     // TODO: Optimize
     films: {
@@ -37,60 +37,59 @@ export const useEntities = defineStore('entities', {
     async fetchEntities(category, options = {}) {
       if (!category) return [];
   
-      const { page, search } = options
+      let { page, search } = options
 
       // First page load (usually when switching to new screen)
+      // Should not be in search mode
       const isInitialLoad = !search && page === 1
+
+      // First search load
+      const isInitialSearch = search && isEmpty(this.filteredEntities)
 
       // Return function
       const mapReturnData = () => ({
+        currentPage: page,
         data: this.entities,
-        totalCount: this.totalCount
+        totalCount: this.totalCount,
       })
   
-      // Use cached data if available and when there is no search text
+      // Use cached data if available
       if (this[category].data.length && isInitialLoad) {
         this.entities = this[category].data
         this.totalCount = this[category].total
         return mapReturnData()
       }
 
-      // Remove nullish attributes and turn to query string
-      const params = queryString.stringify({
-        page,
-        search 
-      }, {
-        skipNull: true,
-        skipEmptyString: true
-      })
+      if (isInitialSearch) page = 1
 
-      // Call the API
-      const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
-      const data = await response.json()
-      const results = data.results || []
-      this.totalCount = data.count
+      // Call webservice
+      const { count, results } = await fetchEntities(category, options)
+      this.totalCount = count
 
       if (search) {
-        let filteredEntities = []
         // We add to array since we want to implement infinite scrolling in search results too
         if (page > 1) {
-          filteredEntities.push(...results)
+          this.filteredEntities.push(...results)
         } else {
-          filteredEntities = results
+          this.filteredEntities = results
         }
 
-        this.entities = filteredEntities
+        this.entities = this.filteredEntities
         return mapReturnData()
       }
 
       // Cache the results
       // Note: We don't cache search results since we do not save search text across categories
       this[category].data.push(...results)
-      this[category].total = data.count
+      this[category].total = count
 
       // Assign to `entities` so these will be displayed on the list page
       this.entities = this[category].data
       return mapReturnData()
+    },
+    // For clearing stored search data
+    clearSearchData() {
+      this.filteredEntities = []
     }
   },
 })
