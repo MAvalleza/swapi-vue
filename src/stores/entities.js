@@ -3,21 +3,35 @@ import queryString from 'query-string'
 
 const SWAPI_BASE_URL = import.meta.env.VITE_SWAPI_BASE_URL
 
-const BASE_DATA = {
-  data: [],
-  total: 0,
-}
-
 export const useEntities = defineStore('entities', {
   state: () => ({
     entities: [],
     totalCount: 0,
-    films: { ...BASE_DATA },
-    people: { ...BASE_DATA },
-    planets: { ...BASE_DATA },
-    species: { ...BASE_DATA },
-    starships: { ...BASE_DATA },
-    vehicles: { ...BASE_DATA },
+    // TODO: Optimize
+    films: {
+      data: [],
+      total: 0,
+    },
+    people: {
+      data: [],
+      total: 0,
+    },
+    planets: {
+      data: [],
+      total: 0,
+    },
+    species: {
+      data: [],
+      total: 0,
+    },
+    starships: {
+      data: [],
+      total: 0,
+    },
+    vehicles: {
+      data: [],
+      total: 0,
+    },
   }),
   actions: {
     async fetchEntities(category, options = {}) {
