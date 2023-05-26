@@ -14,33 +14,38 @@ const props = defineProps({
 
 const CARD_DATA_MAPPINGS = {
   people: {
-    content: pick(props.data, ['birth_year', 'gender']),
+    fields: ['birth_year', 'gender'],
     icon: '',
   },
   planets: {
-    content: pick(props.data, ['terrain', 'population']),
+    fields: ['terrain', 'population'],
     icon: '',
   },
   films: {
-    content: pick(props.data, ['director', 'release_date']),
+    fields: ['director', 'release_date'],
     icon: '',
   },
   starships: {
-    content: pick(props.data, ['manufacturer', 'cost_in_credits']),
+    fields: ['manufacturer', 'cost_in_credits'],
     icon: '',
   },
   vehicles: {
-    content: pick(props.data, ['manufacturer', 'cost_in_credits']),
+    fields: ['manufacturer', 'cost_in_credits'],
     icon: '',
   },
   species: {
-    content: pick(props.data, ['classification', 'designation']),
+    fields: ['classification', 'designation'],
     icon: '',
   }
 }
 
-let CARD_DATA = ref(CARD_DATA_MAPPINGS[category.value].content)
-let CARD_TITLE = ref(props.data.name || props.data.title)
+function displayCardData() {
+  return pick(props.data, CARD_DATA_MAPPINGS[category.value].fields)
+}
+
+function displayCardTitle() {
+  return props.data.name || props.data.title
+}
 
 function formatAttribute(attr) {
   return attr.replace(/[_-]/g, " ")
@@ -51,9 +56,9 @@ function formatAttribute(attr) {
 v-card
   v-card-item.text-left
     v-card-subtitle.text-uppercase {{ category }}
-    v-card-title.text-capitalize {{ CARD_TITLE }}
+    v-card-title.text-capitalize {{ displayCardTitle() }}
   v-card-text.text-left
-    p(v-for="(value, attr, index) in CARD_DATA" :key="index")
+    p(v-for="(value, attr, index) in displayCardData()" :key="index")
       strong.font-weight-medium.text-capitalize {{ formatAttribute(attr) }}:&nbsp;
       span.text-capitalize {{ value }}
 </template>

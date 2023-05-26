@@ -6,6 +6,7 @@ export const useEntities = defineStore('entities', {
   state: () => ({
     entities: [],
     filteredEntities: [],
+    searchText: null,
     totalCount: 0,
     // TODO: Optimize
     films: {
@@ -43,8 +44,8 @@ export const useEntities = defineStore('entities', {
       // Should not be in search mode
       const isInitialLoad = !search && page === 1
 
-      // First search load
-      const isInitialSearch = search && isEmpty(this.filteredEntities)
+      // New search text
+      const isNewSearch = this.searchText !== search
 
       // Return function
       const mapReturnData = () => ({
@@ -60,10 +61,14 @@ export const useEntities = defineStore('entities', {
         return mapReturnData()
       }
 
-      if (isInitialSearch) page = 1
+      // We start with page 1 for a new search
+      if (isNewSearch) page = 1
 
       // Call webservice
-      const { count, results } = await fetchEntities(category, options)
+      const { count, results } = await fetchEntities(category, {
+        page,
+        search
+      })
       this.totalCount = count
 
       if (search) {
@@ -73,6 +78,12 @@ export const useEntities = defineStore('entities', {
         } else {
           this.filteredEntities = results
         }
+
+        /* Store the search text, so we can identify if the
+          user made a new search or simply scrolled in the next
+          call of this action
+        */
+        this.searchText = search
 
         this.entities = this.filteredEntities
         return mapReturnData()

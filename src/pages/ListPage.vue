@@ -70,17 +70,14 @@ async function loadNextEntities() {
   fetchEntities()
 }
 
-// TODO: FIX SEARCH AND SWITCHING OF SCREENS
 function searchEntities() {
-  console.log('emitted', fetchParams.search)
-
   // If no search text, return to initial data
   if (!fetchParams.search) {
     entitiesStore.clearSearchData()
     return initialize()
   }
 
-  const search = debounce(fetchEntities, 500)
+  const search = debounce(fetchEntities, 1000)
 
   // Invoke search
   setLoading(search)
@@ -103,6 +100,7 @@ v-container.container
   div.my-5
     entities-search-bar(
       v-model="fetchParams.search"
+      :key="category"
       @search="searchEntities"
     )
 

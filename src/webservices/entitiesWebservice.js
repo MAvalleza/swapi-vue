@@ -19,7 +19,5 @@ export const fetchEntities = async (category, {
     const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
     const data = await response.json()
 
-    console.log('data', data)
-
     return data
 }
