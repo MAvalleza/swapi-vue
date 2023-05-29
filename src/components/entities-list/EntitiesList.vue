@@ -1,6 +1,8 @@
 <script setup>
 import EntityCard from './EntityCard.vue'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { inject, onMounted, onUnmounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { extractId } from '@/helpers/urlHelper'
 
 const props = defineProps({
   entities: {
@@ -9,9 +11,26 @@ const props = defineProps({
   },
 })
 
-const loadingMore = ref(false)
+const router = useRouter()
+let category = inject('category')
 
 const emit = defineEmits(['load'])
+
+
+const loadingMore = ref(false)
+
+function viewEntity(entity) {
+  const { url } = entity
+  const id = extractId(url)
+
+  router.push({
+    name: 'details',
+    params: {
+      category: category.value,
+      id: id
+    }
+  })
+}
 
 async function handleScroll(e) {
   let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -37,7 +56,7 @@ div
     v-for="(entity, key) in props.entities"
     :key="key"
   )
-    entity-card(:data="entity")
+    entity-card(:data="entity" @click="viewEntity(entity)")
     v-divider
   v-progress-circular(v-if="loadingMore" indeterminate)
 </template>

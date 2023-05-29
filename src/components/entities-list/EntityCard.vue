@@ -12,6 +12,8 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['click'])
+
 const CARD_DATA_MAPPINGS = {
   people: {
     fields: ['birth_year', 'gender'],
@@ -61,4 +63,7 @@ v-card
     p(v-for="(value, attr, index) in displayCardData()" :key="index")
       strong.font-weight-medium.text-capitalize {{ formatAttribute(attr) }}:&nbsp;
       span.text-capitalize {{ value }}
+  v-card-actions
+    v-spacer
+    v-btn(variant="outlined" color="primary" @click="emit('click')") View
 </template>
