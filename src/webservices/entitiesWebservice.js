@@ -21,3 +21,11 @@ export const fetchEntities = async (category, {
 
     return data
 }
+
+export const fetchEntity = async (category, id)  => {
+  // Call the API
+  const response = await fetch(`${SWAPI_BASE_URL}/${category}/${id}`)
+  const data = await response.json()
+
+  return data
+}
