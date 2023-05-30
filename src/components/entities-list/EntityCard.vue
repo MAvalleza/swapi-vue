@@ -1,6 +1,7 @@
 <script setup>
 import pick from 'lodash-es/pick'
 import { inject, ref } from 'vue'
+import { removeUnderscore } from '@/helpers/format';
 
 let category = inject('category')
 
@@ -50,7 +51,7 @@ function displayCardTitle() {
 }
 
 function formatAttribute(attr) {
-  return attr.replace(/[_-]/g, " ")
+  return removeUnderscore(attr)
 }
 </script>
 
