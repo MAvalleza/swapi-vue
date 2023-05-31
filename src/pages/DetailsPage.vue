@@ -1,7 +1,7 @@
 <script setup>
 import pick from 'lodash-es/pick'
 import { onMounted, ref, reactive } from 'vue'
-import { useRoute } from 'vue-router'
+import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { useEntity } from '@/stores/entity'
 // import { mapCategory } from '@/helpers/categoryHelper'
 // import { extractId } from '@/helpers/urlHelper'
@@ -30,30 +30,23 @@ function getSections() {
   return SECTIONS[category.value]
 }
 
-function displayEntityTitle() {
-  return entity.name || entity.title
+function getName(data) {
+  return data.name || data.title
 }
 
-function displayInformation(fields) {
+function getInformation(fields) {
   return pick(entity, fields)
 }
-
-// async function loadEntities(field) {
-//   const idArray = entity[field].map(url => extractId(url))
-
-//   // Handle special fields (e.g. residents = people)
-//   const mappedCategory = mapCategory(field)
-
-//   const promises = url_id_array.map(id => {
-//     return entityStore.fetchEntity(mapp edCategory, id)
-//   })
-
-//   const data = await Promise.all(promises)
-// }
 
 // TODO: For section component, fetch the entities listed upon opening
 
 onMounted(() => {
+  initialize()
+})
+
+onBeforeRouteUpdate((to, from) => {
+  category.value = to.params.category
+  id.value = to.params.id
   initialize()
 })
 </script>
@@ -64,7 +57,7 @@ div.text-center
   v-container(v-else)
     div.header
       h2.text-subtitle-1.text-uppercase {{ category }}
-      h1.text-h3.text-uppercase.my-3 {{ displayEntityTitle() }}
+      h1.text-h3.text-uppercase.my-3 {{ getName(entity) }}
 
     div(
       v-for="(section, key) in getSections()"
@@ -72,13 +65,14 @@ div.text-center
     ).details-section.my-3
       detail-section(
         :title="section.title"
-        :content="displayInformation(section.fields)"
+        :content="getInformation(section.fields)"
         :value-only="section.valueOnly"
       )
     // TODO: Related entities section
     //- div
-    //-   related-entities-section(
-    //-     :data=""
-    //-     @open="loadEntities(field)"
+    //-   related-entities(
+    //-     v-for="(fieldValue, field) in entity.populatedData"
+    //-     :title="field"
+    //-     :content="fieldValue"
     //-   )
 </template>
