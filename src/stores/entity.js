@@ -45,8 +45,6 @@ export const useEntity = defineStore('entity', {
        */
       data.populatedData = await this.populateEntities(data)
 
-      console.log('data', data)
-
       return data
     },
     // Populate related entities by fetching
@@ -54,21 +52,22 @@ export const useEntity = defineStore('entity', {
       const entityFields = omitBy(pick(data, ENTITY_FIELDS), isEmpty)
       let populatedData = {}
 
-      Object.keys(entityFields).forEach(async (field) => {
-        const urlValue = entityFields[field]
+      // The callback function needs to be awaited
+      await Promise.all(
+        Object.keys(entityFields).map(async (field) => {
+          const urlValue = entityFields[field]
 
-        // Checks if there are multiple urls
-        if (isArray(urlValue)) {
-          // Fetches all and adds it to a field in the populated data
-          const promises = urlValue.map(url => fetchEntityByURL(url))
+          // Checks if there are multiple urls
+          if (isArray(urlValue)) {
+            // Fetches all and adds it to a field in the populated data
+            const promises = urlValue.map(url => fetchEntityByURL(url))
 
-          const fetchedData = await Promise.all(promises)
-
-          populatedData[field] = fetchedData
-        } else {
-          populatedData[field] = await fetchEntityByURL(urlValue)
-        }
-      })
+            populatedData[field] = await Promise.all(promises)
+          } else {
+            populatedData[field] = await fetchEntityByURL(urlValue)
+          }
+        })
+      )
 
       return populatedData
     }

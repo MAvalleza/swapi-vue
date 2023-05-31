@@ -1,10 +1,8 @@
 <script setup>
-import pick from 'lodash-es/pick'
+import { isArray, pick } from 'lodash-es'
 import { onMounted, ref, reactive } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { useEntity } from '@/stores/entity'
-// import { mapCategory } from '@/helpers/categoryHelper'
-// import { extractId } from '@/helpers/urlHelper'
 import { SECTIONS } from '@/constants/details-page/content'
 import DetailSection from '@/components/details-page/DetailSection.vue'
 
@@ -69,10 +67,15 @@ div.text-center
         :value-only="section.valueOnly"
       )
     // TODO: Related entities section
-    //- div
-    //-   related-entities(
-    //-     v-for="(fieldValue, field) in entity.populatedData"
-    //-     :title="field"
-    //-     :content="fieldValue"
-    //-   )
+    div(
+      v-for="(fieldValue, field) in entity.populatedData"
+      :key="field"
+    ).my-3
+      detail-section(:title="field")
+        template(#content)
+          // Multiple data (e.g. `people`, `vehicles`)
+          template(v-if="isArray(fieldValue)")
+            p(v-for="(item, key) in fieldValue" :key="key") {{ getName(item) }}
+          // Singular data (e.g. `homeworld`)
+          p(v-else) {{ getName(fieldValue) }}
 </template>

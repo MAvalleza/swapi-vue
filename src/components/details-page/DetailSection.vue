@@ -17,7 +17,8 @@ const props = defineProps({
 
 <template lang="pug">
 v-card(rounded="xl").text-left.pa-3
-  template(#title) {{ props.title }}
+  template(#title)
+    span.text-capitalize {{ props.title }}
 
   template(#text)
     slot(name="content")
