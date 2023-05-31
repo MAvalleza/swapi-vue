@@ -29,3 +29,12 @@ export const fetchEntity = async (category, id)  => {
 
   return data
 }
+
+// For data where the actual request URL is supplied
+export const fetchEntityByURL = async (url) => {
+  // Call the API
+  const response = await fetch(url)
+  const data = await response.json()
+
+  return data
+}
