@@ -1,5 +1,6 @@
 import isEmpty from 'lodash-es/isEmpty'
 import { defineStore } from 'pinia'
+import { translate } from '@/helpers/languageHelper'
 import { fetchEntities } from '@/webservices/entitiesWebservice'
 
 export const useEntities = defineStore('entities', {
@@ -65,10 +66,12 @@ export const useEntities = defineStore('entities', {
       if (isNewSearch) page = 1
 
       // Call webservice
-      const { count, results } = await fetchEntities(category, {
+      const data = await fetchEntities(category, {
         page,
         search
       })
+      const count = data[translate('count')]
+      const results = data[translate('results')]
       this.totalCount = count
 
       if (search) {

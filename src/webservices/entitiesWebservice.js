@@ -6,10 +6,13 @@ export const fetchEntities = async (category, {
   page,
   search,
 }) => {
+  try {
+    const wookiee = true
    // Remove nullish attributes and turn to query string
     const params = queryString.stringify({
       page,
-      search 
+      search,
+      format: 'wookiee'
     }, {
       skipNull: true,
       skipEmptyString: true
@@ -17,24 +20,44 @@ export const fetchEntities = async (category, {
 
     // Call the API
     const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
-    const data = await response.json()
+    const data = await parseResponse(response)
 
     return data
+  } catch(e) {
+    throw e
+  }
 }
 
 export const fetchEntity = async (category, id)  => {
-  // Call the API
-  const response = await fetch(`${SWAPI_BASE_URL}/${category}/${id}`)
-  const data = await response.json()
-
-  return data
+  try {
+    // Call the API
+    const response = await fetch(`${SWAPI_BASE_URL}/${category}/${id}`)
+    const data = await response.json()
+  
+    return data
+  } catch (e) {
+    throw e
+  }
 }
 
 // For data where the actual request URL is supplied
 export const fetchEntityByURL = async (url) => {
-  // Call the API
-  const response = await fetch(url)
-  const data = await response.json()
+  try {
+    // Call the API
+    const response = await fetch(url)
+    const data = await response.json()
+  
+    return data
+  } catch (e) {
+    throw e
+  }
+}
 
-  return data
+const parseResponse = async (response) => {
+  let responseText = await response.text()
+
+  // This is to parse the Wookiee representation of `null`
+  responseText = responseText.replace(/whhuanan/g, '"whhuanan"')
+
+  return JSON.parse(responseText)
 }
