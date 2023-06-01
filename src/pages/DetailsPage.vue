@@ -36,8 +36,6 @@ function getInformation(fields) {
   return pick(entity, fields)
 }
 
-// TODO: For section component, fetch the entities listed upon opening
-
 onMounted(() => {
   initialize()
 })
@@ -66,7 +64,7 @@ div.text-center
         :content="getInformation(section.fields)"
         :value-only="section.valueOnly"
       )
-    // TODO: Related entities section
+    // Populated entities
     div(
       v-for="(fieldValue, field) in entity.populatedData"
       :key="field"

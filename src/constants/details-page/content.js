@@ -71,20 +71,3 @@ export const SECTIONS = {
     }
   ]
 }
-
-
-export const DETAILS = {
-  [CATEGORY_VALUE.people]: {
-    sections: [
-      {
-        title: 'Basic Information',
-        fields: ['birth_year', 'gender']
-      },
-      {
-        title: 'Characteristics',
-        fields: ['height', 'mass', 'hair_color', 'skin_color', 'eye_color']
-      }
-    ],
-    relatedEntities: ['homeworld', 'species', 'vehicles', 'starships', 'films']
-  }
-}
