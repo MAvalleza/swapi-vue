@@ -3,6 +3,7 @@ import debounce from 'lodash-es/debounce'
 import { storeToRefs } from 'pinia'
 import { onMounted, provide, reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { translate } from '@/helpers/languageHelper'
 import { hasNextPage, nextPage } from '@/helpers/paginationHelper'
 import { useEntities } from '@/stores/entities'
 import EntitiesList from '@/components/entities-list/EntitiesList.vue'
@@ -95,7 +96,7 @@ onBeforeRouteUpdate((to, from) => {
 
 <template lang="pug">
 v-container.container
-  h1.text-h4.text-capitalize.text-left {{ category }}
+  h1.text-h4.text-capitalize.text-left {{ translate(category) }}
 
   div.my-5
     entities-search-bar(

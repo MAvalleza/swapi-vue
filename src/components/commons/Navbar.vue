@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import { CATEGORIES } from '@/constants/categories'
+import { translate } from '@/helpers/languageHelper'
 
 const categories = ref(CATEGORIES)
 const drawer = ref(false)
-
 </script>
 
 <template lang="pug">
@@ -25,7 +25,7 @@ v-navigation-drawer(
 		v-list-item(
 			v-for="(category, key) in categories"
 			:key="key"
-			:title="category.text"
 			:to="{ name: 'list', params: { category: category.value } }"
 		)
+			v-list-item-title.text-capitalize {{ translate(category.text.toLowerCase()) }}
 </template>
