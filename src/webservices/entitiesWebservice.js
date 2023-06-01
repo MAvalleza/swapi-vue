@@ -8,7 +8,6 @@ export const fetchEntities = async (category, {
 }) => {
   try {
     // Get wookiee flag value from localStorage
-    localStorage.setItem('isWookieeEnabled', true)
     const isWookieeEnabled = JSON.parse(localStorage.getItem('isWookieeEnabled'))
 
    // Remove nullish params and turn to query string

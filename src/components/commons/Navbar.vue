@@ -1,10 +1,20 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { CATEGORIES } from '@/constants/categories'
 import { translate } from '@/helpers/languageHelper'
 
 const categories = ref(CATEGORIES)
 const drawer = ref(false)
+
+const switchValue = ref(false)
+
+function onWookieeToggle() {
+	localStorage.setItem('isWookieeEnabled', switchValue.value)
+}
+
+onMounted(() => {
+	switchValue.value = JSON.parse(localStorage.getItem('isWookieeEnabled'))
+})
 </script>
 
 <template lang="pug">
@@ -28,4 +38,12 @@ v-navigation-drawer(
 			:to="{ name: 'list', params: { category: category.value } }"
 		)
 			v-list-item-title.text-capitalize {{ translate(category.text.toLowerCase()) }}
+
+	template(#append)
+		div.pa-2
+			v-switch(
+				v-model="switchValue"
+				label="Wookiee"
+				@update:modelValue="onWookieeToggle"
+			)
 </template>
