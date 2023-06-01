@@ -7,12 +7,15 @@ export const fetchEntities = async (category, {
   search,
 }) => {
   try {
-    const wookiee = true
-   // Remove nullish attributes and turn to query string
+    // Get wookiee flag value from localStorage
+    localStorage.setItem('isWookieeEnabled', true)
+    const isWookieeEnabled = JSON.parse(localStorage.getItem('isWookieeEnabled'))
+
+   // Remove nullish params and turn to query string
     const params = queryString.stringify({
       page,
       search,
-      format: 'wookiee'
+      ...isWookieeEnabled && { format: 'wookiee' }
     }, {
       skipNull: true,
       skipEmptyString: true
@@ -20,8 +23,15 @@ export const fetchEntities = async (category, {
 
     // Call the API
     const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
-    const data = await parseResponse(response)
+    
+    let data = {}
+    // Run thru parser function if wookiee format
+    if (isWookieeEnabled) {
+      data = await parseResponse(response)
+      return data
+    }
 
+    data = await response.json()
     return data
   } catch(e) {
     throw e

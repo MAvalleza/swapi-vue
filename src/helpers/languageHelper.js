@@ -1,9 +1,10 @@
 import { WOOKIEE_LANGUAGE } from '@/constants/language'
 
 export const translate = (word) => {
-  const language = 'wookiee'
-  // Word will be returned as is
-  if (language === 'default') return word
+  const isWookieeEnabled = JSON.parse(localStorage.getItem('isWookieeEnabled'))
 
-  return WOOKIEE_LANGUAGE[word]
+  if (isWookieeEnabled) return WOOKIEE_LANGUAGE[word]
+
+  return word
 }
+
