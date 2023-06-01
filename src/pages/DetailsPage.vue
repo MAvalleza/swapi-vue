@@ -2,6 +2,8 @@
 import { isArray, pick } from 'lodash-es'
 import { onMounted, ref, reactive } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { mapCategory } from '@/helpers/categoryHelper'
+import { extractId } from '@/helpers/urlHelper'
 import { useEntity } from '@/stores/entity'
 import { SECTIONS } from '@/constants/details-page/content'
 import DetailSection from '@/components/details-page/DetailSection.vue'
@@ -34,6 +36,13 @@ function getName(data) {
 
 function getInformation(fields) {
   return pick(entity, fields)
+}
+
+function getLink(category, data) {
+  const mappedCategory = mapCategory(category)
+  const id = extractId(data.url)
+
+  return `/details/${mappedCategory}/${id}`
 }
 
 onMounted(() => {
@@ -73,7 +82,11 @@ div.text-center
         template(#content)
           // Multiple data (e.g. `people`, `vehicles`)
           template(v-if="isArray(fieldValue)")
-            p(v-for="(item, key) in fieldValue" :key="key") {{ getName(item) }}
+            router-link(
+              v-for="(item, key) in fieldValue" :key="key"
+              :to="getLink(field, item)"
+            )
+              p {{ getName(item) }}
           // Singular data (e.g. `homeworld`)
-          p(v-else) {{ getName(fieldValue) }}
+          router-link(v-else :to="getLink(field, fieldValue)") {{ getName(fieldValue) }}
 </template>
