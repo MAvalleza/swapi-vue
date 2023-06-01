@@ -56,8 +56,12 @@ export const fetchEntityByURL = async (url) => {
 const parseResponse = async (response) => {
   let responseText = await response.text()
 
-  // This is to parse the Wookiee representation of `null`
+  // Parse the Wookiee representation of `null`
   responseText = responseText.replace(/whhuanan/g, '"whhuanan"')
+
+  // Parse special characters
+  responseText = responseText.replace(/\\r/g, '\\r')
+    .replace(/\\wh/g, '\\n')
 
   return JSON.parse(responseText)
 }
