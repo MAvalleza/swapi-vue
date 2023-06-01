@@ -1,6 +1,6 @@
 import queryString from 'query-string'
 
-const SWAPI_BASE_URL = import.meta.env.VITE_SWAPI_BASE_URL
+const SWAPI_BASE_URL = 'https://swapi.dev/api'
 
 export const fetchEntities = async (category, {
   page,
