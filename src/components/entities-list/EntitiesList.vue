@@ -2,6 +2,7 @@
 import EntityCard from './EntityCard.vue'
 import { inject, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { translate } from '@/helpers/languageHelper'
 import { extractId } from '@/helpers/urlHelper'
 
 const props = defineProps({
@@ -20,7 +21,7 @@ const emit = defineEmits(['load'])
 const loadingMore = ref(false)
 
 function viewEntity(entity) {
-  const { url } = entity
+  const url = entity[translate('url')]
   const id = extractId(url)
 
   router.push({

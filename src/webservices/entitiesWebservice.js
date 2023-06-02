@@ -2,19 +2,20 @@ import queryString from 'query-string'
 
 const SWAPI_BASE_URL = 'https://swapi.dev/api'
 
+function isWookieeEnabled() {
+  return JSON.parse(localStorage.getItem('isWookieeEnabled'))
+}
+
 export const fetchEntities = async (category, {
   page,
   search,
 }) => {
   try {
-    // Get wookiee flag value from localStorage
-    const isWookieeEnabled = JSON.parse(localStorage.getItem('isWookieeEnabled'))
-
    // Remove nullish params and turn to query string
     const params = queryString.stringify({
       page,
       search,
-      ...isWookieeEnabled && { format: 'wookiee' }
+      ...isWookieeEnabled() && { format: 'wookiee' }
     }, {
       skipNull: true,
       skipEmptyString: true
@@ -25,7 +26,7 @@ export const fetchEntities = async (category, {
     
     let data = {}
     // Run thru parser function if wookiee format
-    if (isWookieeEnabled) {
+    if (isWookieeEnabled()) {
       data = await parseResponse(response)
       return data
     }
@@ -39,8 +40,12 @@ export const fetchEntities = async (category, {
 
 export const fetchEntity = async (category, id)  => {
   try {
+    if (!category || !id) return
+
+    // Compose fetch url
+    const url = `${SWAPI_BASE_URL}/${category}/${id}${isWookieeEnabled() ? '?format=wookiee' : ''}`
     // Call the API
-    const response = await fetch(`${SWAPI_BASE_URL}/${category}/${id}`)
+    const response = await fetch(url)
     const data = await response.json()
   
     return data
@@ -52,6 +57,8 @@ export const fetchEntity = async (category, id)  => {
 // For data where the actual request URL is supplied
 export const fetchEntityByURL = async (url) => {
   try {
+    if(!url) return
+
     // Call the API
     const response = await fetch(url)
     const data = await response.json()
