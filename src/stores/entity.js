@@ -5,8 +5,10 @@ import {
   pick
 } from 'lodash-es'
 import { defineStore } from 'pinia'
-import { fetchEntity, fetchEntityByURL } from '@/webservices/entitiesWebservice'
+import { fetchEntity } from '@/webservices/entitiesWebservice'
 import { useEntities as entitiesStore } from './entities'
+import { mapCategory } from '@/helpers/categoryHelper'
+import { translate } from '@/helpers/languageHelper'
 import { extractId } from '@/helpers/urlHelper'
 import { CATEGORY_VALUES } from '../constants/categories'
 
@@ -26,11 +28,9 @@ export const useEntity = defineStore('entity', {
 
       if (entities.length) {
         // Find and return entity data if already fetched in store
-        const entity = entities.find(e => {
-          return extractId(e.url) === id
+        data = entities.find(e => {
+          return extractId(e[translate('url')]) === id
         })
-
-        if (entity) data = entity
       }
 
       if (isEmpty(data)) {
@@ -49,22 +49,50 @@ export const useEntity = defineStore('entity', {
     },
     // Populate related entities by fetching
     async populateEntities (data) {
-      const entityFields = omitBy(pick(data, ENTITY_FIELDS), isEmpty)
+      /**
+       * We want to get the field and it's corresponding category
+       * so we know which endpoint to call regardless if it's in Wookiee
+       * */ 
+      const MAPPED_FIELD_CATEGORY = ENTITY_FIELDS.map(field => ({
+        category: mapCategory(field),
+        field: translate(field)
+      }))
+
+      const entityFields = MAPPED_FIELD_CATEGORY.map(m => m.field)
+
+      const dataToBePopulated = omitBy(pick(data, entityFields), isEmpty)
       let populatedData = {}
 
       // The callback function needs to be awaited
       await Promise.all(
-        Object.keys(entityFields).map(async (field) => {
-          const urlValue = entityFields[field]
+        Object.keys(dataToBePopulated).map(async (field) => {
+          const urlValue = dataToBePopulated[field]
+
+          /**
+           * This identifies the category to use for the `fetchEntity` webservice
+           */
+          const getCategory = (fieldToEvaluate) => {
+            return MAPPED_FIELD_CATEGORY.find(fc => 
+              fc.field === fieldToEvaluate
+            ).category
+          }
 
           // Checks if there are multiple urls
           if (isArray(urlValue)) {
             // Fetches all and adds it to a field in the populated data
-            const promises = urlValue.map(url => fetchEntityByURL(url))
+            const promises = urlValue.map(url =>
+              fetchEntity(
+                getCategory(field),
+                extractId(url)
+              )
+            )
 
             populatedData[field] = await Promise.all(promises)
           } else {
-            populatedData[field] = await fetchEntityByURL(urlValue)
+            populatedData[field] = await fetchEntity(
+              getCategory(field),
+              extractId(urlValue)
+            )
           }
         })
       )

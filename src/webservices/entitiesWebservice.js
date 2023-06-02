@@ -24,14 +24,9 @@ export const fetchEntities = async (category, {
     // Call the API
     const response = await fetch(`${SWAPI_BASE_URL}/${category}/?${params}`)
     
-    let data = {}
-    // Run thru parser function if wookiee format
-    if (isWookieeEnabled()) {
-      data = await parseResponse(response)
-      return data
-    }
+    // Parse response
+    const data = await parseResponse(response)
 
-    data = await response.json()
     return data
   } catch(e) {
     throw e
@@ -46,8 +41,9 @@ export const fetchEntity = async (category, id)  => {
     const url = `${SWAPI_BASE_URL}/${category}/${id}${isWookieeEnabled() ? '?format=wookiee' : ''}`
     // Call the API
     const response = await fetch(url)
-    const data = await response.json()
-  
+    // Parse response
+    const data = await parseResponse(response)
+
     return data
   } catch (e) {
     throw e
@@ -61,7 +57,8 @@ export const fetchEntityByURL = async (url) => {
 
     // Call the API
     const response = await fetch(url)
-    const data = await response.json()
+    // Parse response
+    const data = await parseResponse(response)
   
     return data
   } catch (e) {
@@ -70,6 +67,11 @@ export const fetchEntityByURL = async (url) => {
 }
 
 const parseResponse = async (response) => {
+  if (!isWookieeEnabled()) {
+    return await response.json()
+  }
+
+  // If in Wookiee, we process possible unexpected JSON attributes
   let responseText = await response.text()
 
   // Parse the Wookiee representation of `null`

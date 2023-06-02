@@ -8,7 +8,7 @@ export const translate = (word) => {
   const transformedChars = []
 
   for (let i = 0; i < word.length; i++) {
-    const char = word[i]
+    const char = word[i].toLowerCase()
     const transformedChar = WOOKIEE_ALPHABET[char] || char
     transformedChars.push(transformedChar)
   }

@@ -3,6 +3,7 @@ import { isArray, pick } from 'lodash-es'
 import { onMounted, ref, reactive } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { mapCategory } from '@/helpers/categoryHelper'
+import { translate } from '@/helpers/languageHelper'
 import { extractId } from '@/helpers/urlHelper'
 import { useEntity } from '@/stores/entity'
 import { SECTIONS } from '@/constants/details-page/content'
@@ -31,16 +32,16 @@ function getSections() {
 }
 
 function getName(data) {
-  return data.name || data.title
+  return data[translate('name')] || data[translate('title')]
 }
 
 function getInformation(fields) {
-  return pick(entity, fields)
+  return pick(entity, fields.map(field => translate(field)))
 }
 
 function getLink(category, data) {
   const mappedCategory = mapCategory(category)
-  const id = extractId(data.url)
+  const id = extractId(data[translate('url')])
 
   return `/details/${mappedCategory}/${id}`
 }
@@ -61,15 +62,15 @@ div.text-center
   v-progress-circular(v-if="loading" indeterminate color="primary")
   v-container(v-else)
     div.header
-      h2.text-subtitle-1.text-uppercase {{ category }}
-      h1.text-h3.text-uppercase.my-3 {{ getName(entity) }}
+      h2.text-subtitle-1.text-uppercase {{ translate(category) }}
+      h1.text-h3.text-uppercase.text-truncate.my-3 {{ getName(entity) }}
 
     div(
       v-for="(section, key) in getSections()"
       :key="key"
     ).details-section.my-3
       detail-section(
-        :title="section.title"
+        :title="translate(section.title)"
         :content="getInformation(section.fields)"
         :value-only="section.valueOnly"
       )
