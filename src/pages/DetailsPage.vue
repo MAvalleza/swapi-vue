@@ -63,7 +63,7 @@ div.text-center
   v-container(v-else)
     div.header
       h2.text-subtitle-1.text-uppercase {{ translate(category) }}
-      h1.text-h3.text-uppercase.text-truncate.my-3 {{ getName(entity) }}
+      h1.text-h3.text-uppercase.my-3 {{ getName(entity) }}
 
     div(
       v-for="(section, key) in getSections()"
@@ -91,3 +91,9 @@ div.text-center
           // Singular data (e.g. `homeworld`)
           router-link(v-else :to="getLink(field, fieldValue)") {{ getName(fieldValue) }}
 </template>
+
+<style scoped>
+.header {
+  overflow-wrap: break-word;
+}
+</style>

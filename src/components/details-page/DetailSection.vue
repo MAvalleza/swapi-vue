@@ -24,5 +24,5 @@ v-card(rounded="xl").text-left.pa-3
     slot(name="content")
       p(v-for="(value, key) in props.content")
         strong(v-if="!valueOnly").text-capitalize.font-weight-medium {{ removeUnderscore(key) }}:&nbsp;
-        span.text-capitalize {{ value }}
+        span {{ value }}
 </template>
