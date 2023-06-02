@@ -1,10 +1,18 @@
-import { WOOKIEE_LANGUAGE } from '@/constants/language'
+import { WOOKIEE_ALPHABET } from '@/constants/language'
 
 export const translate = (word) => {
   const isWookieeEnabled = JSON.parse(localStorage.getItem('isWookieeEnabled'))
 
-  if (isWookieeEnabled) return WOOKIEE_LANGUAGE[word]
+  if (!isWookieeEnabled) return word
 
-  return word
+  const transformedChars = []
+
+  for (let i = 0; i < word.length; i++) {
+    const char = word[i]
+    const transformedChar = WOOKIEE_ALPHABET[char] || char
+    transformedChars.push(transformedChar)
+  }
+
+  return transformedChars.join('')
 }
 

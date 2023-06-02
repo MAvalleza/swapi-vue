@@ -8,7 +8,7 @@ const categories = ref(CATEGORIES)
 
 <template lang="pug">
 v-container.text-center
-  h1 SWAPI Portal
+  h1 {{ translate('SWAPI Portal') }}
 
   div.mt-10
     v-list(v-for="(category, key) in categories")  

@@ -27,7 +27,7 @@ v-navigation-drawer(
 	location="right"
 	temporary
 )
-	v-list-item(title="SWAPI Portal" :to="{ name: 'index' }")
+	v-list-item(:title="translate('SWAPI Portal')" :to="{ name: 'index' }")
 
 	v-divider
 
