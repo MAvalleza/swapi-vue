@@ -70,32 +70,33 @@ div.text-center
     div.header
       h2.text-subtitle-1.text-uppercase {{ translate(category) }}
       h1.text-h3.text-uppercase.my-3 {{ getName(entity) }}
-
-    div(
-      v-for="(section, key) in getSections()"
-      :key="key"
-    ).details-section.my-3
-      detail-section(
-        :title="translate(section.title)"
-        :content="getInformation(section.fields)"
-        :value-only="section.valueOnly"
-      )
-    // Populated entities
-    div(
-      v-for="(fieldValue, field) in entity.populatedData"
-      :key="field"
-    ).my-3
-      detail-section(:title="field")
-        template(#content)
-          // Multiple data (e.g. `people`, `vehicles`)
-          template(v-if="isArray(fieldValue)")
-            router-link(
-              v-for="(item, key) in fieldValue" :key="key"
-              :to="getLink(field, item)"
-            )
-              p {{ getName(item) }}
-          // Singular data (e.g. `homeworld`)
-          router-link(v-else :to="getLink(field, fieldValue)") {{ getName(fieldValue) }}
+    v-row(justify="center")
+      v-col(cols="12" lg="8")
+        div(
+          v-for="(section, key) in getSections()"
+          :key="key"
+        ).details-section.my-3
+          detail-section(
+            :title="translate(section.title)"
+            :content="getInformation(section.fields)"
+            :value-only="section.valueOnly"
+          )
+        // Populated entities
+        div(
+          v-for="(fieldValue, field) in entity.populatedData"
+          :key="field"
+        ).my-3
+          detail-section(:title="field")
+            template(#content)
+              // Multiple data (e.g. `people`, `vehicles`)
+              template(v-if="isArray(fieldValue)")
+                router-link(
+                  v-for="(item, key) in fieldValue" :key="key"
+                  :to="getLink(field, item)"
+                )
+                  p {{ getName(item) }}
+              // Singular data (e.g. `homeworld`)
+              router-link(v-else :to="getLink(field, fieldValue)") {{ getName(fieldValue) }}
 </template>
 
 <style scoped>

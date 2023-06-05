@@ -21,6 +21,7 @@ languageStore.$subscribe(() => {
 
 let category = ref(route.params.category)
 let loading = ref(false)
+let loadingMore = ref(false)
 
 const initial = {
   params: {
@@ -67,14 +68,17 @@ async function fetchEntities() {
 }
 
 // Loads next set of entities for infinite scrolling purposes
-function loadNextEntities() {
+async function loadNextEntities() {
   // Don't run if no next page
   if (!hasNextPage(total.overall, total.current)) return
 
   // Increment page
   fetchParams.page = nextPage(total.current, 10)
+  loadingMore.value = true
   // Fetch next data
-  fetchEntities()
+  await fetchEntities()
+
+  loadingMore.value = false
 }
 
 function searchEntities() {
@@ -102,19 +106,21 @@ onBeforeRouteUpdate((to, from) => {
 
 <template lang="pug">
 v-container.container
-  h1.text-h4.text-capitalize.text-left {{ translate(category) }}
+  v-row(justify="center")
+    v-col(cols="12" lg="8")
+      h1.text-h4.text-capitalize.text-left {{ translate(category) }}
 
-  div.my-5
-    entities-search-bar(
-      v-model="fetchParams.search"
-      :key="category"
-      @search="searchEntities"
-    )
+      div.my-5
+        entities-search-bar(
+          v-model="fetchParams.search"
+          :key="category"
+          @search="searchEntities"
+        )
 
-  div(v-if="loading").text-center
-    v-progress-circular(indeterminate color="primary")
-  template(v-else)
-    entities-list(:entities="entities" @load="loadNextEntities")
+      div(v-if="loading").text-center
+        v-progress-circular(indeterminate color="primary")
+      template(v-else)
+        entities-list(:entities="entities" :loading="loadingMore" @load="loadNextEntities")
 </template>
 
 <style scoped>
