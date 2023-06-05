@@ -36,7 +36,7 @@ export const useEntities = defineStore('entities', {
     },
   }),
   actions: {
-    async fetchEntities(category, options = {}) {
+    async fetchEntities(category, options = {}, refetch = false) {
       if (!category) return [];
   
       let { page, search } = options

@@ -6,12 +6,19 @@ import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { translate } from '@/helpers/languageHelper'
 import { hasNextPage, nextPage } from '@/helpers/paginationHelper'
 import { useEntities } from '@/stores/entities'
+import { useLanguage } from '@/stores/language'
 import EntitiesList from '@/components/entities-list/EntitiesList.vue'
 import EntitiesSearchBar from '@/components/entities-list/EntitiesSearchBar.vue'
 
 const route = useRoute()
 const entitiesStore = useEntities()
+const languageStore = useLanguage()
 const { entities } = storeToRefs(entitiesStore)
+
+languageStore.$subscribe(() => {
+  entitiesStore.$reset()
+  initialize()
+})
 
 let category = ref(route.params.category)
 let loading = ref(false)
