@@ -1,19 +1,25 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { CATEGORIES } from '@/constants/categories'
 import { translate } from '@/helpers/languageHelper'
+import { useLanguage } from '@/stores/language'
 
+const languageStore = useLanguage()
+
+const { isWookieeEnabled } = storeToRefs(languageStore)
 const categories = ref(CATEGORIES)
 const drawer = ref(false)
 
 const switchValue = ref(false)
 
 function onWookieeToggle() {
-	localStorage.setItem('isWookieeEnabled', switchValue.value)
+	languageStore.toggleWookiee()
+	switchValue.value = isWookieeEnabled.value
 }
 
 onMounted(() => {
-	switchValue.value = JSON.parse(localStorage.getItem('isWookieeEnabled'))
+	switchValue.value = isWookieeEnabled.value
 })
 </script>
 

@@ -1,7 +1,12 @@
 <script setup>
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue'
 import { CATEGORIES } from '@/constants/categories'
 import { translate } from '@/helpers/languageHelper'
+import { useLanguage } from '@/stores/language';
+
+const languageStore = useLanguage()
+const { isWookieeEnabled } = storeToRefs(languageStore)
 
 const categories = ref(CATEGORIES)
 </script>
