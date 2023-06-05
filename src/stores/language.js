@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useEntities as entitiesStore } from './entities'
 
 export const useLanguage = defineStore('language', {
   state: () => ({
@@ -9,6 +10,8 @@ export const useLanguage = defineStore('language', {
       this.isWookieeEnabled = !this.isWookieeEnabled
 
       localStorage.setItem('isWookieeEnabled', this.isWookieeEnabled)
+
+      entitiesStore().$reset()
     }
   }
 })

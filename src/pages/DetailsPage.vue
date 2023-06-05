@@ -6,10 +6,12 @@ import { mapCategory } from '@/helpers/categoryHelper'
 import { translate } from '@/helpers/languageHelper'
 import { extractId } from '@/helpers/urlHelper'
 import { useEntity } from '@/stores/entity'
+import { useLanguage } from '@/stores/language'
 import { SECTIONS } from '@/constants/details-page/content'
 import DetailSection from '@/components/details-page/DetailSection.vue'
 
 const entityStore = useEntity()
+const languageStore = useLanguage()
 const route = useRoute()
 
 const category = ref(route.params.category)
@@ -17,6 +19,10 @@ const id = ref(route.params.id)
 
 let loading = ref(false)
 let entity = reactive({})
+
+languageStore.$subscribe(() => {
+  initialize()
+})
 
 // Initializer function
 async function initialize() {

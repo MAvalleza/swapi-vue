@@ -16,7 +16,6 @@ const languageStore = useLanguage()
 const { entities } = storeToRefs(entitiesStore)
 
 languageStore.$subscribe(() => {
-  entitiesStore.$reset()
   initialize()
 })
 
