@@ -1,6 +1,6 @@
 <script setup>
 import pick from 'lodash-es/pick'
-import { inject, ref } from 'vue'
+import { inject } from 'vue'
 import { removeUnderscore } from '@/helpers/format'
 import { translate } from '@/helpers/languageHelper'
 

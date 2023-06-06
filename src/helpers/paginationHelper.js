@@ -5,7 +5,7 @@
  * 
  * @param {number} total - total number of items currently displayed
  * @param {number} batchQuantity - number of items per batch (e.g 10 items per page)
- * @returns {boolean}
+ * @returns {number}
  */
 
 export const nextPage = (total, batchQuantity) => {

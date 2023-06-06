@@ -4,6 +4,7 @@
  * Note: SWAPI IDs are assumed to be numeric
  * 
  * @param {string} url
+ * @returns {string} id
  */
 
 export const extractId = (url) => {

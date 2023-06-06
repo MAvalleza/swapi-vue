@@ -36,6 +36,7 @@ async function initialize() {
   try {
     loading.value = true
 
+    // Fetch entity data
     entity = await entityStore.fetchEntity(category.value, id.value)
   } catch (e) {
     snackbar.color = 'error'
@@ -59,6 +60,7 @@ function getInformation(fields) {
 }
 
 function getLink(category, data) {
+  // Mapping to correct category link (e.g. homeworld -> planets)
   const mappedCategory = mapCategory(category)
   const id = extractId(data[translate('url')])
 

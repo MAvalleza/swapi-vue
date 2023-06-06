@@ -12,6 +12,7 @@ import ListPage from '@/pages/ListPage.vue'
 function validateCategory(category) {
   return CATEGORY_VALUES.includes(category)
 }
+
 const routes = [
   { 
     path: '/',

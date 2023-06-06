@@ -6,6 +6,7 @@ export const useLanguage = defineStore('language', {
     isWookieeEnabled: JSON.parse(localStorage.getItem('isWookieeEnabled'))
   }),
   actions: {
+    // Set the boolean value of isWookieeEnabled
     toggleWookiee () {
       this.isWookieeEnabled = !this.isWookieeEnabled
 
