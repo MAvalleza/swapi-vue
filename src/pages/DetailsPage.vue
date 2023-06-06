@@ -1,5 +1,5 @@
 <script setup>
-import { isArray, pick } from 'lodash-es'
+import { isArray, isEmpty, pick } from 'lodash-es'
 import { onMounted, ref, reactive } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { mapCategory } from '@/helpers/categoryHelper'
@@ -18,6 +18,13 @@ const category = ref(route.params.category)
 const id = ref(route.params.id)
 
 let loading = ref(false)
+
+let isSnackbarVisible = ref(false)
+let snackbar = reactive({
+  color: '',
+  text: '',
+})
+
 let entity = reactive({})
 
 languageStore.$subscribe(() => {
@@ -26,11 +33,17 @@ languageStore.$subscribe(() => {
 
 // Initializer function
 async function initialize() {
-  loading.value = true
+  try {
+    loading.value = true
 
-  entity = await entityStore.fetchEntity(category.value, id.value)
-
-  loading.value = false
+    entity = await entityStore.fetchEntity(category.value, id.value)
+  } catch (e) {
+    snackbar.color = 'error'
+    snackbar.text = 'There was an error in fetching this entity'
+    isSnackbarVisible.value = true
+  } finally {
+    loading.value = false
+  }
 }
 
 function getSections() {
@@ -65,8 +78,9 @@ onBeforeRouteUpdate((to, from) => {
 
 <template lang="pug">
 div.text-center
-  v-progress-circular(v-if="loading" indeterminate color="primary")
-  v-container(v-else)
+  v-snackbar(v-model="isSnackbarVisible" :color="snackbar.color") {{ snackbar.text }}
+  v-progress-circular(v-if="loading" indeterminate color="primary").mt-10
+  v-container(v-else-if="!isEmpty(entity)")
     div.header
       h2.text-subtitle-1.text-uppercase {{ translate(category) }}
       h1.text-h3.text-uppercase.my-3 {{ getName(entity) }}

@@ -23,6 +23,12 @@ let category = ref(route.params.category)
 let loading = ref(false)
 let loadingMore = ref(false)
 
+let isSnackbarVisible = ref(false)
+let snackbar = reactive({
+  color: '',
+  text: '',
+})
+
 const initial = {
   params: {
     page: 1,
@@ -58,13 +64,19 @@ function initialize() {
 
 // Invokes store action
 async function fetchEntities() {
-  const { currentPage, data, totalCount } = await entitiesStore.fetchEntities(category.value, { ...fetchParams })
+  try {
+    const { currentPage, data, totalCount } = await entitiesStore.fetchEntities(category.value, { ...fetchParams })
 
-  // Re-assigning page to keep track in search mode
-  fetchParams.page = currentPage
+    // Re-assigning page to keep track in search mode
+    fetchParams.page = currentPage
 
-  total.current = data.length
-  total.overall = totalCount
+    total.current = data.length
+    total.overall = totalCount
+  } catch (e) {
+    snackbar.color = 'error'
+    snackbar.text = 'There was an error in fetching.'
+    isSnackbarVisible.value = true
+  }
 }
 
 // Loads next set of entities for infinite scrolling purposes
@@ -106,6 +118,7 @@ onBeforeRouteUpdate((to, from) => {
 
 <template lang="pug">
 v-container.container
+  v-snackbar(v-model="isSnackbarVisible" :color="snackbar.color") {{ snackbar.text }}
   v-row(justify="center")
     v-col(cols="12" lg="8")
       h1.text-h4.text-capitalize.text-left {{ translate(category) }}
