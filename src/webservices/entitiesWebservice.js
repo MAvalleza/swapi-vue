@@ -1,6 +1,6 @@
 import queryString from 'query-string'
 
-const SWAPI_BASE_URL = 'https://swapi.dev/api'
+const SWAPI_BASE_URL = import.meta.env.VITE_SWAPI_BASE_URL
 
 function isWookieeEnabled() {
   return JSON.parse(localStorage.getItem('isWookieeEnabled'))
