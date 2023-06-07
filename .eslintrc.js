@@ -1,4 +1,4 @@
 module.exports = {
-  extends: ['eslint:recommended'],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended'],
   parser: 'vue-eslint-parser'
 }
