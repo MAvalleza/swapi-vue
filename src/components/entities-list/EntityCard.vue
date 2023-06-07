@@ -62,13 +62,13 @@ function formatAttribute(attr) {
 <template lang="pug">
 v-card
   v-card-item.text-left
-    v-card-subtitle.text-uppercase {{ translate(category) }}
-    v-card-title.text-capitalize {{ displayCardTitle() }}
-  v-card-text.text-left
+    v-card-subtitle.entity-card-subtitle.text-uppercase {{ translate(category) }}
+    v-card-title.entity-card-title.text-capitalize {{ displayCardTitle() }}
+  v-card-text.entity-card-content.text-left
     p(v-for="(value, attr, index) in displayCardData()" :key="index")
       strong.font-weight-medium.text-capitalize {{ formatAttribute(attr) }}:&nbsp;
       span.text-capitalize {{ value }}
   v-card-actions
     v-spacer
-    v-btn(variant="outlined" color="primary" @click="emit('click')") View
+    v-btn(variant="outlined" color="primary" @click="emit('click')").entity-card-view-btn View
 </template>
