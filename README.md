@@ -23,4 +23,4 @@ yarn dev
 ```
 
 ## TODOS
-Pending: UI/UX Enhancements, Unit Tests
+Pending: Unit Tests
