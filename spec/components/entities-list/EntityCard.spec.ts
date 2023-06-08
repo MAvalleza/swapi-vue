@@ -4,9 +4,7 @@ import EntityCard from '@/components/entities-list/EntityCard.vue'
 import { afterEach, describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
 
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import vuetify from '../../factories/vuetifyFactory'
 
 describe('EntityCard.vue', () => {
   const ENTITY_DATA = {
@@ -16,11 +14,6 @@ describe('EntityCard.vue', () => {
   }
 
   const CATEGORY = 'people' 
-
-  const vuetify = createVuetify({
-    components,
-    directives,
-  })
 
   const wrapper = mount(EntityCard, {
     propsData: {
