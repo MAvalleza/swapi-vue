@@ -9,7 +9,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     deps: {
-        inline: ["vuetify"],
+        inline: ['vuetify'],
     },
   },
   resolve: {
