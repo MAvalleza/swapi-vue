@@ -18,11 +18,11 @@ const props = defineProps({
 <template lang="pug">
 v-card(rounded="xl").text-left.pa-3
   template(#title)
-    span.text-capitalize {{ props.title }}
+    span.detail-title.text-capitalize {{ props.title }}
 
   template(#text)
     slot(name="content")
       p(v-for="(value, key) in props.content")
-        strong(v-if="!valueOnly").text-capitalize.font-weight-medium {{ removeUnderscore(key) }}:&nbsp;
-        span {{ value }}
+        strong(v-if="!valueOnly").detail-attribute.text-capitalize.font-weight-medium {{ removeUnderscore(key) }}:&nbsp;
+        span.detail-attribute-value {{ value }}
 </template>
