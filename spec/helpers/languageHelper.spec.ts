@@ -2,10 +2,7 @@ import { translate } from '@/helpers/languageHelper'
 import { describe, it, expect, vi } from 'vitest'
 
 // Mocks
-
-const spy = vi.spyOn(Storage.prototype, 'getItem')
 const mockLocalStorageGet = vi.fn()
-
 Storage.prototype.getItem = mockLocalStorageGet
 
 describe('Language helper functions', () => {
