@@ -50,22 +50,6 @@ export const fetchEntity = async (category, id)  => {
   }
 }
 
-// For data where the actual request URL is supplied
-export const fetchEntityByURL = async (url) => {
-  try {
-    if(!url) return
-
-    // Call the API
-    const response = await fetch(url)
-    // Parse response
-    const data = await parseResponse(response)
-  
-    return data
-  } catch (e) {
-    throw e
-  }
-}
-
 const parseResponse = async (response) => {
   if (!isWookieeEnabled()) {
     return await response.json()
