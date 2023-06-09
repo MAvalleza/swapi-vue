@@ -21,6 +21,3 @@ Run the project with:
 ```
 yarn dev
 ```
-
-## TODOS
-Pending: Unit Tests
