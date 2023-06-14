@@ -1,6 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
+import { useDisplay } from 'vuetify'
 import { CATEGORIES } from '@/constants/categories'
 import { translate } from '@/helpers/languageHelper'
 import { useLanguage } from '@/stores/language'
@@ -12,6 +13,8 @@ const categories = ref(CATEGORIES)
 const drawer = ref(false)
 
 const switchValue = ref(false)
+
+const { mobile } = useDisplay()
 
 function onWookieeToggle() {
 	languageStore.toggleWookiee()
@@ -25,12 +28,28 @@ onMounted(() => {
 
 <template lang="pug">
 v-app-bar(color="primary")
-	v-spacer
-	v-app-bar-nav-icon(color="white" variant="text" @click.stop="drawer = !drawer")
+	template(v-if="mobile")
+		v-app-bar-nav-icon(color="white" variant="text" @click.stop="drawer = !drawer")
+	v-app-bar-title.text-h5
+		router-link(:to="{ name: 'index' }" :key="switchValue").app-bar-title {{ translate('SWAPI Portal') }}
+	template(v-if="!mobile")
+		v-btn(
+			v-for="(category, key) in categories"
+			:key="key"
+			:to="{ name: 'list', params: { category: category.value } }"
+			text
+		) {{ translate(category.text.toLowerCase()) }}
+		v-spacer
+		div.mr-1.pt-5
+			v-switch(
+				v-model="switchValue"
+				label="Wookiee"
+				@update:modelValue="onWookieeToggle"
+			)
 
 v-navigation-drawer(
 	v-model="drawer"
-	location="right"
+	location="left"
 	temporary
 )
 	v-list-item(:title="translate('SWAPI Portal')" :to="{ name: 'index' }")
@@ -53,3 +72,9 @@ v-navigation-drawer(
 				@update:modelValue="onWookieeToggle"
 			)
 </template>
+
+<style scoped>
+.app-bar-title {
+	color: white !important
+}
+</style>
