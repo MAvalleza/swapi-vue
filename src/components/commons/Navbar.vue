@@ -31,7 +31,7 @@ v-app-bar(color="primary")
 	template(v-if="mobile")
 		v-app-bar-nav-icon(color="white" variant="text" @click.stop="drawer = !drawer")
 	v-app-bar-title.text-h5
-		router-link(:to="{ name: 'index' }" :key="switchValue").app-bar-title {{ translate('SWAPI Portal') }}
+		router-link(:to="{ name: 'index' }" :key="switchValue").app-bar-title.font-weight-bold {{ translate('SWAPI Portal') }}
 	template(v-if="!mobile")
 		v-btn(
 			v-for="(category, key) in categories"
