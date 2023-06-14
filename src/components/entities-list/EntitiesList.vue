@@ -4,6 +4,7 @@ import { inject, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { translate } from '@/helpers/languageHelper'
 import { extractId } from '@/helpers/urlHelper'
+import { ENTITY_CARD_CONTENT } from '@/constants/entities-list/card-content'
 import EntityCard from './EntityCard.vue'
 
 const props = defineProps({
@@ -35,6 +36,10 @@ function viewEntity(entity) {
   })
 }
 
+function getEntityConfig() {
+  return ENTITY_CARD_CONTENT[category.value]
+}
+
 const handleScroll = debounce(() => {
   let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
   if (bottomOfWindow) emit('load')
@@ -55,7 +60,11 @@ div
     v-for="(entity, key) in props.entities"
     :key="key"
   )
-    entity-card(:data="entity" @click="viewEntity(entity)")
+    entity-card(
+      :data="entity"
+      :options="getEntityConfig()"
+      @click="viewEntity(entity)"
+    )
     v-divider
   div(v-if="loading").text-center
     v-progress-circular(indeterminate color="primary")

@@ -12,46 +12,29 @@ const props = defineProps({
     required: true,
     default: () => ({})
   },
+  /**
+   * Render options
+   * @param {String} options.title - The title field of the entity
+   * @param {String[]} options.contentFields - The fields of the entity to display
+   */
+  options: {
+    type: Object,
+    required: true
+  }
 })
 
 const emit = defineEmits(['click'])
 
-const CARD_DATA_MAPPINGS = {
-  people: {
-    fields: ['birth_year', 'gender'],
-    icon: '',
-  },
-  planets: {
-    fields: ['terrain', 'population'],
-    icon: '',
-  },
-  films: {
-    fields: ['director', 'release_date'],
-    icon: '',
-  },
-  starships: {
-    fields: ['manufacturer', 'cost_in_credits'],
-    icon: '',
-  },
-  vehicles: {
-    fields: ['manufacturer', 'cost_in_credits'],
-    icon: '',
-  },
-  species: {
-    fields: ['classification', 'designation'],
-    icon: '',
-  }
-}
-
 function displayCardData() {
-  const fields = CARD_DATA_MAPPINGS[category.value].fields
+  const fields = props.options.contentFields
     .map(field => translate(field))
 
   return pick(props.data, fields)
 }
 
 function displayCardTitle() {
-  return props.data[translate('name')] || props.data[translate('title')]
+  const title = translate(props.options.title)
+  return props.data[title]
 }
 
 function formatAttribute(attr) {
