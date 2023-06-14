@@ -1,5 +1,4 @@
 <script setup>
-import debounce from 'lodash-es/debounce'
 import { storeToRefs } from 'pinia'
 import { onMounted, provide, reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
@@ -100,10 +99,8 @@ function searchEntities() {
     return initialize()
   }
 
-  const search = debounce(fetchEntities, 1000)
-
   // Invoke search
-  setLoading(search)
+  setLoading(fetchEntities)
 }
 
 onMounted(() => {
@@ -129,7 +126,6 @@ v-container.container
           :key="category"
           @search="searchEntities"
         )
-
       div(v-if="loading").text-center
         v-progress-circular(indeterminate color="primary")
       template(v-else)

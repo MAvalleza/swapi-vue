@@ -1,4 +1,5 @@
 <script setup>
+import debounce from 'lodash-es/debounce'
 import { ref, toRefs } from 'vue'
 
 const props = defineProps({
@@ -11,10 +12,10 @@ const { modelValue } = toRefs(props)
 
 let searchText = ref(modelValue.value)
 
-function onUpdate(e) {
+const onUpdate = debounce((e) => {
   emit('update:modelValue', e)
   emit('search')
-}
+}, 1000)
 </script>
 
 <template lang="pug">
