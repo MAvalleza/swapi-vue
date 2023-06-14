@@ -1,9 +1,10 @@
 <script setup>
-import EntityCard from './EntityCard.vue'
+import debounce from 'lodash-es/debounce'
 import { inject, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { translate } from '@/helpers/languageHelper'
 import { extractId } from '@/helpers/urlHelper'
+import EntityCard from './EntityCard.vue'
 
 const props = defineProps({
   entities: {
@@ -34,10 +35,10 @@ function viewEntity(entity) {
   })
 }
 
-function handleScroll(e) {
+const handleScroll = debounce(() => {
   let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
   if (bottomOfWindow) emit('load')
-}
+}, 1000)
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
