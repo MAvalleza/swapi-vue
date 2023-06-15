@@ -1,21 +1,21 @@
 <script setup>
-import debounce from 'lodash-es/debounce'
-import { ref, toRefs } from 'vue'
+import debounce from 'lodash-es/debounce';
+import { ref, toRefs } from 'vue';
 
 const props = defineProps({
   modelValue: String,
-})
+});
 
-let emit = defineEmits(['update:modelValue', 'search'])
+let emit = defineEmits(['update:modelValue', 'search']);
 
-const { modelValue } = toRefs(props)
+const { modelValue } = toRefs(props);
 
-let searchText = ref(modelValue.value)
+let searchText = ref(modelValue.value);
 
-const onUpdate = debounce((e) => {
-  emit('update:modelValue', e)
-  emit('search')
-}, 1000)
+const onUpdate = debounce(e => {
+  emit('update:modelValue', e);
+  emit('search');
+}, 1000);
 </script>
 
 <template lang="pug">

@@ -1,29 +1,29 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
-import { useDisplay } from 'vuetify'
-import { CATEGORIES } from '@/constants/categories'
-import { translate } from '@/helpers/languageHelper'
-import { useLanguage } from '@/stores/language'
+import { storeToRefs } from 'pinia';
+import { onMounted, ref } from 'vue';
+import { useDisplay } from 'vuetify';
+import { CATEGORIES } from '@/constants/categories';
+import { translate } from '@/helpers/languageHelper';
+import { useLanguage } from '@/stores/language';
 
-const languageStore = useLanguage()
+const languageStore = useLanguage();
 
-const { isWookieeEnabled } = storeToRefs(languageStore)
-const categories = ref(CATEGORIES)
-const drawer = ref(false)
+const { isWookieeEnabled } = storeToRefs(languageStore);
+const categories = ref(CATEGORIES);
+const drawer = ref(false);
 
-const switchValue = ref(false)
+const switchValue = ref(false);
 
-const { mobile } = useDisplay()
+const { mobile } = useDisplay();
 
 function onWookieeToggle() {
-	languageStore.toggleWookiee()
-	switchValue.value = isWookieeEnabled.value
+  languageStore.toggleWookiee();
+  switchValue.value = isWookieeEnabled.value;
 }
 
 onMounted(() => {
-	switchValue.value = isWookieeEnabled.value
-})
+  switchValue.value = isWookieeEnabled.value;
+});
 </script>
 
 <template lang="pug">
@@ -75,6 +75,6 @@ v-navigation-drawer(
 
 <style scoped>
 .app-bar-title {
-	color: white !important
+  color: white !important;
 }
 </style>

@@ -1,13 +1,14 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue'
-import { translate } from '@/helpers/languageHelper'
+import { ref } from 'vue';
+import { translate } from '@/helpers/languageHelper';
 import { useLanguage } from '@/stores/language';
 
-const languageStore = useLanguage()
-const { isWookieeEnabled } = storeToRefs(languageStore)
+const languageStore = useLanguage();
+const { isWookieeEnabled } = storeToRefs(languageStore);
 
-const BODY_TEXT = 'Your collection of Star Wars characters, planets, and more. Read more information about them now!'
+const BODY_TEXT =
+  'Your collection of Star Wars characters, planets, and more. Read more information about them now!';
 </script>
 
 <template lang="pug">

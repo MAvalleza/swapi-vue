@@ -1,18 +1,18 @@
 <script setup>
-import { removeUnderscore } from '@/helpers/format'
+import { removeUnderscore } from '@/helpers/format';
 
 const props = defineProps({
   title: String,
   content: {
     type: Object,
-    default: () => ({})
+    default: () => ({}),
   },
   // If you want to show the value only
   valueOnly: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 </script>
 
 <template lang="pug">

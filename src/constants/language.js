@@ -25,4 +25,4 @@ export const WOOKIEE_ALPHABET = {
   x: 'k',
   y: 'ro',
   // z
-}
+};

@@ -1,5 +1,5 @@
 <script setup>
-import Navbar from '@/components/commons/Navbar.vue'
+import Navbar from '@/components/commons/Navbar.vue';
 </script>
 
 <template lang="pug">
@@ -9,4 +9,3 @@ v-app
   v-main
     router-view
 </template>
-

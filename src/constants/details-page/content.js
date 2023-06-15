@@ -1,15 +1,15 @@
-import { CATEGORY_VALUE } from '@/constants/categories'
+import { CATEGORY_VALUE } from '@/constants/categories';
 
 export const SECTIONS = {
   [CATEGORY_VALUE.people]: [
     {
       title: 'Basic Information',
-      fields: ['birth_year', 'gender']
+      fields: ['birth_year', 'gender'],
     },
     {
       title: 'Characteristics',
-      fields: ['height', 'mass', 'hair_color', 'skin_color', 'eye_color']
-    }
+      fields: ['height', 'mass', 'hair_color', 'skin_color', 'eye_color'],
+    },
   ],
   [CATEGORY_VALUE.planets]: [
     {
@@ -18,19 +18,25 @@ export const SECTIONS = {
     },
     {
       title: 'Characteristics',
-      fields: ['rotation_period', 'orbital_period', 'diameter', 'gravity', 'surface_water']
-    }
+      fields: [
+        'rotation_period',
+        'orbital_period',
+        'diameter',
+        'gravity',
+        'surface_water',
+      ],
+    },
   ],
   [CATEGORY_VALUE.films]: [
     {
       title: 'Opening Crawl',
       fields: ['opening_crawl'],
-      valueOnly: true
+      valueOnly: true,
     },
     {
       title: 'Movie Information',
       fields: ['episode_id', 'release_date', 'director', 'producer'],
-    }
+    },
   ],
   [CATEGORY_VALUE.starships]: [
     {
@@ -43,7 +49,7 @@ export const SECTIONS = {
     },
     {
       title: 'Characteristics',
-      fields: ['length', 'max_atmosphering_speed', 'hyperdrive_rating', 'MGLT']
+      fields: ['length', 'max_atmosphering_speed', 'hyperdrive_rating', 'MGLT'],
     },
   ],
   [CATEGORY_VALUE.vehicles]: [
@@ -67,7 +73,12 @@ export const SECTIONS = {
     },
     {
       title: 'Characteristics',
-      fields: ['average_height', 'average_lifespan', 'eye_colors', 'hair_colors']
-    }
-  ]
-}
+      fields: [
+        'average_height',
+        'average_lifespan',
+        'eye_colors',
+        'hair_colors',
+      ],
+    },
+  ],
+};

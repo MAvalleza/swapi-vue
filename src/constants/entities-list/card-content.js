@@ -1,10 +1,10 @@
-import { CATEGORY_VALUE } from '@/constants/categories'
+import { CATEGORY_VALUE } from '@/constants/categories';
 
 // Values are the attribute/field names
 export const ENTITY_CARD_CONTENT = {
   [CATEGORY_VALUE.people]: {
     title: 'name',
-    contentFields: ['birth_year', 'gender'],  
+    contentFields: ['birth_year', 'gender'],
   },
   [CATEGORY_VALUE.planets]: {
     title: 'name',
@@ -26,4 +26,4 @@ export const ENTITY_CARD_CONTENT = {
     title: 'name',
     contentFields: ['classification', 'designation'],
   },
-}
+};

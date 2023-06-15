@@ -5,7 +5,7 @@ export const CATEGORY_VALUE = {
   starships: 'starships',
   vehicles: 'vehicles',
   species: 'species',
-}
+};
 
 export const CATEGORIES = [
   { text: 'Planets', value: CATEGORY_VALUE.planets },
@@ -14,6 +14,6 @@ export const CATEGORIES = [
   { text: 'Starships', value: CATEGORY_VALUE.starships },
   { text: 'Vehicles', value: CATEGORY_VALUE.vehicles },
   { text: 'Species', value: CATEGORY_VALUE.species },
-]
+];
 
-export const CATEGORY_VALUES = CATEGORIES.map(category => category.value)
+export const CATEGORY_VALUES = CATEGORIES.map(category => category.value);

@@ -1,16 +1,16 @@
 <script setup>
-import pick from 'lodash-es/pick'
-import { inject } from 'vue'
-import { removeUnderscore } from '@/helpers/format'
-import { translate } from '@/helpers/languageHelper'
+import pick from 'lodash-es/pick';
+import { inject } from 'vue';
+import { removeUnderscore } from '@/helpers/format';
+import { translate } from '@/helpers/languageHelper';
 
-let category = inject('category')
+let category = inject('category');
 
 const props = defineProps({
   data: {
     type: Object,
     required: true,
-    default: () => ({})
+    default: () => ({}),
   },
   /**
    * Render options
@@ -19,26 +19,25 @@ const props = defineProps({
    */
   options: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click']);
 
 function displayCardData() {
-  const fields = props.options.contentFields
-    .map(field => translate(field))
+  const fields = props.options.contentFields.map(field => translate(field));
 
-  return pick(props.data, fields)
+  return pick(props.data, fields);
 }
 
 function displayCardTitle() {
-  const title = translate(props.options.title)
-  return props.data[title]
+  const title = translate(props.options.title);
+  return props.data[title];
 }
 
 function formatAttribute(attr) {
-  return removeUnderscore(attr)
+  return removeUnderscore(attr);
 }
 </script>
 

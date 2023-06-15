@@ -1,20 +1,20 @@
-import { translate } from '@/helpers/languageHelper'
-import { describe, it, expect, vi } from 'vitest'
+import { translate } from '@/helpers/languageHelper';
+import { describe, it, expect, vi } from 'vitest';
 
 // Mocks
-const mockLocalStorageGet = vi.fn()
-Storage.prototype.getItem = mockLocalStorageGet
+const mockLocalStorageGet = vi.fn();
+Storage.prototype.getItem = mockLocalStorageGet;
 
 describe('Language helper functions', () => {
   it('translates the string to wookiee when Wookiee is enabled', () => {
-    mockLocalStorageGet.mockImplementationOnce(() => true)
+    mockLocalStorageGet.mockImplementationOnce(() => true);
 
-    expect(translate('people')).toEqual('akwoooakanwo')
-  })
+    expect(translate('people')).toEqual('akwoooakanwo');
+  });
 
   it('returns the string when Wookiee is not enabled', () => {
-    mockLocalStorageGet.mockImplementationOnce(() => false)
+    mockLocalStorageGet.mockImplementationOnce(() => false);
 
-    expect(translate('people')).toEqual('people')
-  })
-})
+    expect(translate('people')).toEqual('people');
+  });
+});

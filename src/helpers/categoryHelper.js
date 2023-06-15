@@ -1,4 +1,4 @@
-import { CATEGORY_VALUE } from "@/constants/categories"
+import { CATEGORY_VALUE } from '@/constants/categories';
 
 const CATEGORY_MAPPER = {
   ...CATEGORY_VALUE,
@@ -6,9 +6,9 @@ const CATEGORY_MAPPER = {
   homeworld: 'planets',
   residents: 'people',
   pilots: 'people',
-}
+};
 
 // Maps a field to the actual category represented
-export const mapCategory = (category) => {
-  return CATEGORY_MAPPER[category]
-}
+export const mapCategory = category => {
+  return CATEGORY_MAPPER[category];
+};

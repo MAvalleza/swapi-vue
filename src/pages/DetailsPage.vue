@@ -1,81 +1,84 @@
 <script setup>
-import { isArray, isEmpty, pick } from 'lodash-es'
-import { onMounted, ref, reactive } from 'vue'
-import { onBeforeRouteUpdate, useRoute } from 'vue-router'
-import { mapCategory } from '@/helpers/categoryHelper'
-import { translate } from '@/helpers/languageHelper'
-import { extractId } from '@/helpers/urlHelper'
-import { useEntity } from '@/stores/entity'
-import { useLanguage } from '@/stores/language'
-import { SECTIONS } from '@/constants/details-page/content'
-import DetailSection from '@/components/details-page/DetailSection.vue'
+import { isArray, isEmpty, pick } from 'lodash-es';
+import { onMounted, ref, reactive } from 'vue';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { mapCategory } from '@/helpers/categoryHelper';
+import { translate } from '@/helpers/languageHelper';
+import { extractId } from '@/helpers/urlHelper';
+import { useEntity } from '@/stores/entity';
+import { useLanguage } from '@/stores/language';
+import { SECTIONS } from '@/constants/details-page/content';
+import DetailSection from '@/components/details-page/DetailSection.vue';
 
-const entityStore = useEntity()
-const languageStore = useLanguage()
-const route = useRoute()
+const entityStore = useEntity();
+const languageStore = useLanguage();
+const route = useRoute();
 
-const category = ref(route.params.category)
-const id = ref(route.params.id)
+const category = ref(route.params.category);
+const id = ref(route.params.id);
 
-let loading = ref(false)
+let loading = ref(false);
 
-let isSnackbarVisible = ref(false)
+let isSnackbarVisible = ref(false);
 let snackbar = reactive({
   color: '',
   text: '',
-})
+});
 
-let entity = reactive({})
+let entity = reactive({});
 
 languageStore.$subscribe(() => {
-  initialize()
-})
+  initialize();
+});
 
 // Initializer function
 async function initialize() {
   try {
-    loading.value = true
+    loading.value = true;
 
     // Fetch entity data
-    entity = await entityStore.fetchEntity(category.value, id.value)
+    entity = await entityStore.fetchEntity(category.value, id.value);
   } catch (e) {
-    snackbar.color = 'error'
-    snackbar.text = 'There was an error in fetching this entity'
-    isSnackbarVisible.value = true
+    snackbar.color = 'error';
+    snackbar.text = 'There was an error in fetching this entity';
+    isSnackbarVisible.value = true;
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 function getSections() {
-  return SECTIONS[category.value]
+  return SECTIONS[category.value];
 }
 
 function getName(data) {
-  return data[translate('name')] || data[translate('title')]
+  return data[translate('name')] || data[translate('title')];
 }
 
 function getInformation(fields) {
-  return pick(entity, fields.map(field => translate(field)))
+  return pick(
+    entity,
+    fields.map(field => translate(field))
+  );
 }
 
 function getLink(category, data) {
   // Mapping to correct category link (e.g. homeworld -> planets)
-  const mappedCategory = mapCategory(category)
-  const id = extractId(data[translate('url')])
+  const mappedCategory = mapCategory(category);
+  const id = extractId(data[translate('url')]);
 
-  return `/details/${mappedCategory}/${id}`
+  return `/details/${mappedCategory}/${id}`;
 }
 
 onMounted(() => {
-  initialize()
-})
+  initialize();
+});
 
 onBeforeRouteUpdate((to, from) => {
-  category.value = to.params.category
-  id.value = to.params.id
-  initialize()
-})
+  category.value = to.params.category;
+  id.value = to.params.id;
+  initialize();
+});
 </script>
 
 <template lang="pug">
