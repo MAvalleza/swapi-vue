@@ -3,7 +3,10 @@ import debounce from 'lodash-es/debounce';
 import { ref, toRefs } from 'vue';
 
 const props = defineProps({
-  modelValue: String,
+  modelValue: {
+    type: String,
+    default: null
+  },
 });
 
 let emit = defineEmits(['update:modelValue', 'search']);
@@ -27,6 +30,6 @@ v-text-field(
   append-inner-icon="mdi-magnify"
   single-line
   hide-details
-  @update:modelValue="onUpdate"
+  @update:model-value="onUpdate"
 )
 </template>
