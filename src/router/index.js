@@ -28,7 +28,7 @@ const routes = [
     },
   },
   {
-    path: '/details/:category/:id',
+    path: '/list/:category/:id',
     name: 'details',
     component: DetailsPage,
     beforeEnter: to => {

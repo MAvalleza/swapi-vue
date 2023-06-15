@@ -67,7 +67,7 @@ function getLink(category, data) {
   const mappedCategory = mapCategory(category);
   const id = extractId(data[translate('url')]);
 
-  return `/details/${mappedCategory}/${id}`;
+  return `/list/${mappedCategory}/${id}`;
 }
 
 onMounted(() => {
