@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import queryString from 'query-string'
 
 const SWAPI_BASE_URL = import.meta.env.VITE_SWAPI_BASE_URL

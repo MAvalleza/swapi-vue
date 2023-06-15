@@ -23,7 +23,7 @@ const routes = [
     path: '/list/:category',
     name: 'list',
     component: ListPage,
-    beforeEnter: (to, from) => {
+    beforeEnter: (to) => {
       return validateCategory(to.params.category)
     }
   },
@@ -31,7 +31,7 @@ const routes = [
     path: '/details/:category/:id',
     name: 'details',
     component: DetailsPage,
-    beforeEnter: (to, from) => {
+    beforeEnter: (to) => {
       return validateCategory(to.params.category)
     }
   }

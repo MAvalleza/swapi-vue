@@ -1,4 +1,3 @@
-import isEmpty from 'lodash-es/isEmpty'
 import { defineStore } from 'pinia'
 import { translate } from '@/helpers/languageHelper'
 import { fetchEntities } from '@/webservices/entitiesWebservice'
@@ -36,7 +35,7 @@ export const useEntities = defineStore('entities', {
     },
   }),
   actions: {
-    async fetchEntities(category, options = {}, refetch = false) {
+    async fetchEntities(category, options = {}) {
       if (!category) return [];
   
       let { page, search } = options
