@@ -1,6 +1,5 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
 import { translate } from '@/helpers/languageHelper';
 import { useLanguage } from '@/stores/language';
 

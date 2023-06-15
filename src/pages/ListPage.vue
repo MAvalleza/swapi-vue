@@ -110,7 +110,7 @@ onMounted(() => {
   initialize();
 });
 
-onBeforeRouteUpdate((to, from) => {
+onBeforeRouteUpdate((to) => {
   category.value = to.params.category;
   initialize();
 });
@@ -125,8 +125,8 @@ v-container.container
 
       div.my-5
         entities-search-bar(
-          v-model="fetchParams.search"
           :key="category"
+          v-model="fetchParams.search"
           @search="searchEntities"
         )
       div(v-if="loading").text-center

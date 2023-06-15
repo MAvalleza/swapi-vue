@@ -74,7 +74,7 @@ onMounted(() => {
   initialize();
 });
 
-onBeforeRouteUpdate((to, from) => {
+onBeforeRouteUpdate((to) => {
   category.value = to.params.category;
   id.value = to.params.id;
   initialize();

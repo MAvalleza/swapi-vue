@@ -17,12 +17,12 @@ const switchValue = ref(false);
 const { mobile } = useDisplay();
 
 function onWookieeToggle() {
-  languageStore.toggleWookiee();
-  switchValue.value = isWookieeEnabled.value;
+	languageStore.toggleWookiee();
+	switchValue.value = isWookieeEnabled.value;
 }
 
 onMounted(() => {
-  switchValue.value = isWookieeEnabled.value;
+	switchValue.value = isWookieeEnabled.value;
 });
 </script>
 
@@ -31,7 +31,7 @@ v-app-bar(color="primary")
 	template(v-if="mobile")
 		v-app-bar-nav-icon(color="white" variant="text" @click.stop="drawer = !drawer")
 	v-app-bar-title.text-h5
-		router-link(:to="{ name: 'index' }" :key="switchValue").app-bar-title.font-weight-bold {{ translate('SWAPI Portal') }}
+		router-link(:key="switchValue" :to="{ name: 'index' }").app-bar-title.font-weight-bold {{ translate('SWAPI Portal') }}
 	template(v-if="!mobile")
 		v-btn(
 			v-for="(category, key) in categories"
@@ -44,7 +44,7 @@ v-app-bar(color="primary")
 			v-switch(
 				v-model="switchValue"
 				label="Wookiee"
-				@update:modelValue="onWookieeToggle"
+				@update:model-value="onWookieeToggle"
 			)
 
 v-navigation-drawer(
@@ -69,12 +69,12 @@ v-navigation-drawer(
 			v-switch(
 				v-model="switchValue"
 				label="Wookiee"
-				@update:modelValue="onWookieeToggle"
+				@update:model-value="onWookieeToggle"
 			)
 </template>
 
 <style scoped>
 .app-bar-title {
-  color: white !important;
+	color: white !important;
 }
 </style>

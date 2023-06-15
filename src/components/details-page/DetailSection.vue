@@ -2,7 +2,10 @@
 import { removeUnderscore } from '@/helpers/format';
 
 const props = defineProps({
-  title: String,
+  title: {
+    type: String,
+    default: null,
+  },
   content: {
     type: Object,
     default: () => ({}),
@@ -22,7 +25,7 @@ v-card(rounded="xl").text-left.pa-3
 
   template(#text)
     slot(name="content")
-      p(v-for="(value, key) in props.content")
+      p(v-for="(value, key) in props.content" :key="key")
         strong(v-if="!valueOnly").detail-attribute.text-capitalize.font-weight-medium {{ removeUnderscore(key) }}:&nbsp;
         span.detail-attribute-value {{ value }}
 </template>
