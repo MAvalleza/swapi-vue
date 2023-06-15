@@ -9,7 +9,7 @@ import { WOOKIEE_ALPHABET } from '@/constants/language';
 export const translate = word => {
   const isWookieeEnabled = JSON.parse(localStorage.getItem('isWookieeEnabled'));
 
-  if (!isWookieeEnabled) return word;
+  if (!isWookieeEnabled) { return word; }
 
   const transformedChars = [];
 

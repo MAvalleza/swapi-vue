@@ -84,7 +84,9 @@ async function fetchEntities() {
 // Loads next set of entities for infinite scrolling purposes
 async function loadNextEntities() {
   // Don't run if no next page
-  if (!hasNextPage(total.overall, total.current)) return;
+  if (!hasNextPage(total.overall, total.current)) {
+    return;
+  }
 
   // Increment page
   fetchParams.page = nextPage(total.current, 10);

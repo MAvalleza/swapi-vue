@@ -8,7 +8,6 @@ export const useEntities = defineStore('entities', {
     filteredEntities: [],
     searchText: null,
     totalCount: 0,
-    // TODO: Optimize
     films: {
       data: [],
       total: 0,
@@ -36,7 +35,7 @@ export const useEntities = defineStore('entities', {
   }),
   actions: {
     async fetchEntities(category, options = {}) {
-      if (!category) return [];
+      if (!category) { return []; }
 
       let { page, search } = options;
 
@@ -62,7 +61,7 @@ export const useEntities = defineStore('entities', {
       }
 
       // We start with page 1 for a new search
-      if (isNewSearch) page = 1;
+      if (isNewSearch) { page = 1; }
 
       // Call webservice
       const data = await fetchEntities(category, {

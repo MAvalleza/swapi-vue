@@ -36,7 +36,7 @@ export const fetchEntities = async (category, { page, search }) => {
 
 export const fetchEntity = async (category, id) => {
   try {
-    if (!category || !id) return;
+    if (!category || !id) { return; }
 
     // Compose fetch url
     const url = `${SWAPI_BASE_URL}/${category}/${id}${

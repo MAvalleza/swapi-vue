@@ -44,7 +44,7 @@ const handleScroll = debounce(() => {
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight ===
     document.documentElement.offsetHeight;
-  if (bottomOfWindow) emit('load');
+  if (bottomOfWindow) { emit('load'); }
 }, 1000);
 
 onMounted(() => {
