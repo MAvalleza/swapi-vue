@@ -1,6 +1,6 @@
 <script setup>
 import debounce from 'lodash-es/debounce';
-import { inject, onMounted, onUnmounted } from 'vue';
+import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { translate } from '@/helpers/languageHelper';
 import { extractId } from '@/helpers/urlHelper';
@@ -40,14 +40,25 @@ function getEntityConfig() {
   return ENTITY_CARD_CONTENT[category.value];
 }
 
+const isScrolling = ref(false)
+
+watch(() => props.loading, () => {
+  if (!props.loading) {
+    isScrolling.value = false
+  }
+})
+
 const handleScroll = debounce(() => {
+  if (isScrolling.value) { return; }
+
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight ===
     document.documentElement.offsetHeight;
-  if (bottomOfWindow) {
+  if (bottomOfWindow && !isScrolling.value) {
+    isScrolling.value = true;
     emit('load');
   }
-}, 1000);
+}, 500);
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
