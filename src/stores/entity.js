@@ -5,6 +5,7 @@ import { useEntities as entitiesStore } from './entities';
 import { mapCategory } from '@/helpers/categoryHelper';
 import { translate } from '@/helpers/languageHelper';
 import { extractId } from '@/helpers/urlHelper';
+import { useUI as uiStore } from './ui';
 import { CATEGORY_VALUES } from '../constants/categories';
 
 const ENTITY_FIELDS = [
@@ -16,31 +17,45 @@ const ENTITY_FIELDS = [
 ];
 
 export const useEntity = defineStore('entity', {
+  state: () => ({
+    entity: {}
+  }),
   actions: {
     async fetchEntity(category, id) {
-      const entities = entitiesStore()[category]?.data || [];
-      let data = {};
+      try {
+        uiStore().setLoading(true);
 
-      if (entities.length) {
-        // Find and return entity data if already fetched in store
-        data = entities.find(e => {
-          return extractId(e[translate('url')]) === id;
+        const entities = entitiesStore()[category]?.data || [];
+        let data = {};
+  
+        if (entities.length) {
+          // Find and return entity data if already fetched in store
+          data = entities.find(e => {
+            return extractId(e[translate('url')]) === id;
+          });
+        }
+  
+        if (isEmpty(data)) {
+          data = await fetchEntity(category, id);
+        }
+  
+        /**
+         * Populate related entities
+         *
+         * Related entities
+         * (e.g. 'homeworld' in a people entity refers to a `planet` entity)
+         */
+        data.populatedData = await this.populateEntities(data);
+
+        this.entity = data;
+      } catch(e) {
+        uiStore().showSnackbar({
+          color: 'error',
+          message: 'There was an error in fetching this entity.',
         });
+      } finally {
+        uiStore().setLoading(false)
       }
-
-      if (isEmpty(data)) {
-        data = await fetchEntity(category, id);
-      }
-
-      /**
-       * Populate related entities
-       *
-       * Related entities
-       * (e.g. 'homeworld' in a people entity refers to a `planet` entity)
-       */
-      data.populatedData = await this.populateEntities(data);
-
-      return data;
     },
     // Populate related entities by fetching
     async populateEntities(data) {

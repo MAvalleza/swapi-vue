@@ -15,7 +15,7 @@ export const useUI = defineStore('ui', {
       this.loading = val
     },
     // Show snack bar message
-    showSnackBar({ color, message }) {
+    showSnackbar({ color, message }) {
       this.snackbar = { color, message }
       this.isSnackbarVisible = true
     }

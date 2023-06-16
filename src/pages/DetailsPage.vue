@@ -1,31 +1,29 @@
 <script setup>
 import { isArray, isEmpty, pick } from 'lodash-es';
-import { onMounted, ref, reactive } from 'vue';
+import { storeToRefs } from 'pinia';
+import { onMounted, ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 import { mapCategory } from '@/helpers/categoryHelper';
 import { translate } from '@/helpers/languageHelper';
 import { extractId } from '@/helpers/urlHelper';
 import { useEntity } from '@/stores/entity';
 import { useLanguage } from '@/stores/language';
+import { useUI } from '@/stores/ui'
 import { SECTIONS } from '@/constants/details-page/content';
 import DetailSection from '@/components/details-page/DetailSection.vue';
 
 const entityStore = useEntity();
 const languageStore = useLanguage();
+const uiStore = useUI();
+
 const route = useRoute();
 
 const category = ref(route.params.category);
 const id = ref(route.params.id);
 
-let loading = ref(false);
+const { loading, isSnackbarVisible, snackbar } = storeToRefs(uiStore)
 
-let isSnackbarVisible = ref(false);
-let snackbar = reactive({
-  color: '',
-  text: '',
-});
-
-let entity = reactive({});
+const { entity } = storeToRefs(entityStore);
 
 languageStore.$subscribe(() => {
   initialize();
@@ -33,18 +31,8 @@ languageStore.$subscribe(() => {
 
 // Initializer function
 async function initialize() {
-  try {
-    loading.value = true;
-
-    // Fetch entity data
-    entity = await entityStore.fetchEntity(category.value, id.value);
-  } catch (e) {
-    snackbar.color = 'error';
-    snackbar.text = 'There was an error in fetching this entity';
-    isSnackbarVisible.value = true;
-  } finally {
-    loading.value = false;
-  }
+  // Fetch entity data
+  await entityStore.fetchEntity(category.value, id.value);
 }
 
 function getSections() {
@@ -57,7 +45,7 @@ function getName(data) {
 
 function getInformation(fields) {
   return pick(
-    entity,
+    entity.value,
     fields.map(field => translate(field))
   );
 }

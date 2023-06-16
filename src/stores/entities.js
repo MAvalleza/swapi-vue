@@ -103,7 +103,7 @@ export const useEntities = defineStore('entities', {
         this.entities = this[category].data;
         return mapReturnData();
       } catch(e) {
-        uiStore().showSnackBar({
+        uiStore().showSnackbar({
           color: 'error',
           message: 'There was an error in fetching.'
         })
