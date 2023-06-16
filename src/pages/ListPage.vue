@@ -44,13 +44,17 @@ provide('category', category);
 
 
 // Initializer function
-function initialize() {
+async function initialize() {
+  uiStore.setLoading(true);
+
   // Reset the params since this component is reusable
   fetchParams = reactive({ ...initial.params });
   total = reactive({ ...initial.total });
 
   // Fetch the data
-  fetchEntities()
+  await fetchEntities()
+
+  uiStore.setLoading(false);
 }
 
 // Invokes store action

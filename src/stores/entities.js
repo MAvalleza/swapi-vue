@@ -37,8 +37,6 @@ export const useEntities = defineStore('entities', {
   actions: {
     async fetchEntities(category, options = {}) {
       try {
-        uiStore().setLoading(true)
-
         if (!category) { return []; }
   
         let { page, search } = options;
@@ -107,8 +105,6 @@ export const useEntities = defineStore('entities', {
           color: 'error',
           message: 'There was an error in fetching.'
         })
-      } finally {
-        uiStore().setLoading(false)
       }
     },
     // For clearing stored search data

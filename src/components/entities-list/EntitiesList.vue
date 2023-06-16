@@ -66,7 +66,7 @@ div
       :data="entity"
       :options="getEntityConfig()"
       @click="viewEntity(entity)"
-    )
+    ).my-8
     v-divider
   div(v-if="loading").text-center
     v-progress-circular(indeterminate color="primary")
