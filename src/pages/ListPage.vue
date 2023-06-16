@@ -6,12 +6,15 @@ import { translate } from '@/helpers/languageHelper';
 import { hasNextPage, nextPage } from '@/helpers/paginationHelper';
 import { useEntities } from '@/stores/entities';
 import { useLanguage } from '@/stores/language';
+import { useUI } from '@/stores/ui'
 import EntitiesList from '@/components/entities-list/EntitiesList.vue';
 import EntitiesSearchBar from '@/components/entities-list/EntitiesSearchBar.vue';
 
 const route = useRoute();
 const entitiesStore = useEntities();
 const languageStore = useLanguage();
+const uiStore = useUI();
+
 const { entities } = storeToRefs(entitiesStore);
 
 languageStore.$subscribe(() => {
@@ -19,14 +22,9 @@ languageStore.$subscribe(() => {
 });
 
 let category = ref(route.params.category);
-let loading = ref(false);
 let loadingMore = ref(false);
 
-let isSnackbarVisible = ref(false);
-let snackbar = reactive({
-  color: '',
-  text: '',
-});
+const { loading, isSnackbarVisible, snackbar } = storeToRefs(uiStore)
 
 const initial = {
   params: {
@@ -44,12 +42,6 @@ let total = reactive({ ...initial.total });
 
 provide('category', category);
 
-// Loading wrapper function
-async function setLoading(func) {
-  loading.value = true;
-  await func();
-  loading.value = false;
-}
 
 // Initializer function
 function initialize() {
@@ -58,27 +50,21 @@ function initialize() {
   total = reactive({ ...initial.total });
 
   // Fetch the data
-  setLoading(fetchEntities);
+  fetchEntities()
 }
 
 // Invokes store action
 async function fetchEntities() {
-  try {
-    const { currentPage, data, totalCount } = await entitiesStore.fetchEntities(
-      category.value,
-      { ...fetchParams }
-    );
+  const { currentPage, data, totalCount } = await entitiesStore.fetchEntities(
+    category.value,
+    { ...fetchParams }
+  );
 
-    // Re-assigning page to keep track in search mode
-    fetchParams.page = currentPage;
+  // Re-assigning page to keep track in search mode
+  fetchParams.page = currentPage;
 
-    total.current = data.length;
-    total.overall = totalCount;
-  } catch (e) {
-    snackbar.color = 'error';
-    snackbar.text = 'There was an error in fetching.';
-    isSnackbarVisible.value = true;
-  }
+  total.current = data.length;
+  total.overall = totalCount;
 }
 
 // Loads next set of entities for infinite scrolling purposes
@@ -105,7 +91,7 @@ function searchEntities() {
   }
 
   // Invoke search
-  setLoading(fetchEntities);
+  fetchEntities()
 }
 
 onMounted(() => {
@@ -120,7 +106,7 @@ onBeforeRouteUpdate((to) => {
 
 <template lang="pug">
 v-container.container
-  v-snackbar(v-model="isSnackbarVisible" :color="snackbar.color") {{ snackbar.text }}
+  v-snackbar(v-model="isSnackbarVisible" :color="snackbar.color") {{ snackbar.message }}
   v-row(justify="center")
     v-col(cols="12" lg="8")
       h1.text-h4.text-capitalize.text-left {{ translate(category) }}
