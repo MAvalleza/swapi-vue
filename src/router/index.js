@@ -3,6 +3,7 @@ import { CATEGORY_VALUES } from '@/constants/categories';
 import DetailsPage from '@/pages/DetailsPage.vue';
 import HomePage from '@/pages/HomePage.vue';
 import ListPage from '@/pages/ListPage.vue';
+import ListLayout from '@/layouts/ListLayout.vue';
 
 /**
  * Category route guard
@@ -20,20 +21,23 @@ const routes = [
     component: HomePage,
   },
   {
-    path: '/list/:category',
-    name: 'list',
-    component: ListPage,
+    path: '/list',
+    component: ListLayout,
     beforeEnter: to => {
       return validateCategory(to.params.category);
     },
-  },
-  {
-    path: '/list/:category/:id',
-    name: 'details',
-    component: DetailsPage,
-    beforeEnter: to => {
-      return validateCategory(to.params.category);
-    },
+    children: [
+      {
+        path: '/list/:category',
+        name: 'list',
+        component: ListPage,
+      },
+      {
+        path: '/list/:category/:id',
+        name: 'details',
+        component: DetailsPage,
+      }
+    ]
   },
 ];
 
