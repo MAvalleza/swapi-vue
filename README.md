@@ -1,9 +1,5 @@
 ## MValleza Vue SWAPI
 
-IN PROGRESS
-
-## Description
-
 Vue training project. A simple portal of STAR WARS collection from swapi.dev
 
 ## Installing dependencies
