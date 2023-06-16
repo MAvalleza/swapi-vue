@@ -10,7 +10,7 @@ import EntityCard from './EntityCard.vue';
 const props = defineProps({
   entities: {
     type: Array,
-    default: () => ([]),
+    default: () => [],
   },
   loading: {
     type: Boolean,
@@ -44,7 +44,9 @@ const handleScroll = debounce(() => {
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight ===
     document.documentElement.offsetHeight;
-  if (bottomOfWindow) { emit('load'); }
+  if (bottomOfWindow) {
+    emit('load');
+  }
 }, 1000);
 
 onMounted(() => {

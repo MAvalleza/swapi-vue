@@ -5,7 +5,7 @@ import { ref, toRefs } from 'vue';
 const props = defineProps({
   modelValue: {
     type: String,
-    default: null
+    default: null,
   },
 });
 

@@ -8,7 +8,7 @@ import { translate } from '@/helpers/languageHelper';
 import { extractId } from '@/helpers/urlHelper';
 import { useEntity } from '@/stores/entity';
 import { useLanguage } from '@/stores/language';
-import { useUI } from '@/stores/ui'
+import { useUI } from '@/stores/ui';
 import { SECTIONS } from '@/constants/details-page/content';
 import DetailSection from '@/components/details-page/DetailSection.vue';
 
@@ -21,7 +21,7 @@ const route = useRoute();
 const category = ref(route.params.category);
 const id = ref(route.params.id);
 
-const { loading, isSnackbarVisible, snackbar } = storeToRefs(uiStore)
+const { loading, isSnackbarVisible, snackbar } = storeToRefs(uiStore);
 
 const { entity } = storeToRefs(entityStore);
 
@@ -62,7 +62,7 @@ onMounted(() => {
   initialize();
 });
 
-onBeforeRouteUpdate((to) => {
+onBeforeRouteUpdate(to => {
   category.value = to.params.category;
   id.value = to.params.id;
   initialize();

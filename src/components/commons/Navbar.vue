@@ -17,12 +17,12 @@ const switchValue = ref(false);
 const { mobile } = useDisplay();
 
 function onWookieeToggle() {
-	languageStore.toggleWookiee();
-	switchValue.value = isWookieeEnabled.value;
+  languageStore.toggleWookiee();
+  switchValue.value = isWookieeEnabled.value;
 }
 
 onMounted(() => {
-	switchValue.value = isWookieeEnabled.value;
+  switchValue.value = isWookieeEnabled.value;
 });
 </script>
 
@@ -75,6 +75,6 @@ v-navigation-drawer(
 
 <style scoped>
 .app-bar-title {
-	color: white !important;
+  color: white !important;
 }
 </style>

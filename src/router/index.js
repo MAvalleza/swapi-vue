@@ -36,8 +36,8 @@ const routes = [
         path: '/list/:category/:id',
         name: 'details',
         component: DetailsPage,
-      }
-    ]
+      },
+    ],
   },
 ];
 

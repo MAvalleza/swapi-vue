@@ -6,7 +6,7 @@ import { translate } from '@/helpers/languageHelper';
 import { hasNextPage, nextPage } from '@/helpers/paginationHelper';
 import { useEntities } from '@/stores/entities';
 import { useLanguage } from '@/stores/language';
-import { useUI } from '@/stores/ui'
+import { useUI } from '@/stores/ui';
 import EntitiesList from '@/components/entities-list/EntitiesList.vue';
 import EntitiesSearchBar from '@/components/entities-list/EntitiesSearchBar.vue';
 
@@ -24,7 +24,7 @@ languageStore.$subscribe(() => {
 let category = ref(route.params.category);
 let loadingMore = ref(false);
 
-const { loading, isSnackbarVisible, snackbar } = storeToRefs(uiStore)
+const { loading, isSnackbarVisible, snackbar } = storeToRefs(uiStore);
 
 const initial = {
   params: {
@@ -42,7 +42,6 @@ let total = reactive({ ...initial.total });
 
 provide('category', category);
 
-
 // Initializer function
 async function initialize() {
   uiStore.setLoading(true);
@@ -52,7 +51,7 @@ async function initialize() {
   total = reactive({ ...initial.total });
 
   // Fetch the data
-  await fetchEntities()
+  await fetchEntities();
 
   uiStore.setLoading(false);
 }
@@ -95,14 +94,14 @@ function searchEntities() {
   }
 
   // Invoke search
-  fetchEntities()
+  fetchEntities();
 }
 
 onMounted(() => {
   initialize();
 });
 
-onBeforeRouteUpdate((to) => {
+onBeforeRouteUpdate(to => {
   category.value = to.params.category;
   initialize();
 });

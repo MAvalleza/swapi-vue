@@ -18,7 +18,7 @@ const ENTITY_FIELDS = [
 
 export const useEntity = defineStore('entity', {
   state: () => ({
-    entity: {}
+    entity: {},
   }),
   actions: {
     async fetchEntity(category, id) {
@@ -27,18 +27,18 @@ export const useEntity = defineStore('entity', {
 
         const entities = entitiesStore()[category]?.data || [];
         let data = {};
-  
+
         if (entities.length) {
           // Find and return entity data if already fetched in store
           data = entities.find(e => {
             return extractId(e[translate('url')]) === id;
           });
         }
-  
+
         if (isEmpty(data)) {
           data = await fetchEntity(category, id);
         }
-  
+
         /**
          * Populate related entities
          *
@@ -48,13 +48,13 @@ export const useEntity = defineStore('entity', {
         data.populatedData = await this.populateEntities(data);
 
         this.entity = data;
-      } catch(e) {
+      } catch (e) {
         uiStore().showSnackbar({
           color: 'error',
           message: 'There was an error in fetching this entity.',
         });
       } finally {
-        uiStore().setLoading(false)
+        uiStore().setLoading(false);
       }
     },
     // Populate related entities by fetching
