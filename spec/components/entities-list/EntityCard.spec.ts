@@ -18,6 +18,10 @@ describe('EntityCard.vue', () => {
   const wrapper = mount(EntityCard, {
     propsData: {
       data: ENTITY_DATA,
+      options: {
+        title: 'name',
+        contentFields: ['birth_year', 'gender'],
+      },
     },
     global: {
       plugins: [vuetify],

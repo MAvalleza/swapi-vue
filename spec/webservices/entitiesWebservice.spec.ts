@@ -1,5 +1,5 @@
 import sample from 'lodash-es/sample';
-import { describe, vi, afterEach, beforeEach, it, expect } from 'vitest';
+import { describe, vi, afterEach, it, expect } from 'vitest';
 
 import { CATEGORY_VALUES } from '@/constants/categories';
 import { fetchEntities, fetchEntity } from '@/webservices/entitiesWebservice';
@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
 Storage.prototype.getItem = mocks.localStorageGet;
 
 // Fetch mock
-global.fetch = mocks.fetch;
+window.global.fetch = mocks.fetch;
 
 // JSON parse mock
 JSON.parse = vi.fn().mockImplementationOnce(() => false);
