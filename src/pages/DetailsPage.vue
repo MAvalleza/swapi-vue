@@ -71,7 +71,7 @@ onBeforeRouteUpdate(to => {
 
 <template lang="pug">
 div.text-center
-  v-snackbar(v-model="isSnackbarVisible" :color="snackbar.color") {{ snackbar.text }}
+  v-snackbar(v-model="isSnackbarVisible" :color="snackbar.color") {{ snackbar.message }}
   v-progress-circular(v-if="loading" indeterminate color="primary").mt-10
   v-container(v-else-if="!isEmpty(entity)")
     div.header
