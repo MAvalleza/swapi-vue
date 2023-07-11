@@ -40,16 +40,21 @@ function getEntityConfig() {
   return ENTITY_CARD_CONTENT[category.value];
 }
 
-const isScrolling = ref(false)
+const isScrolling = ref(false);
 
-watch(() => props.loading, () => {
-  if (!props.loading) {
-    isScrolling.value = false
+watch(
+  () => props.loading,
+  () => {
+    if (!props.loading) {
+      isScrolling.value = false;
+    }
   }
-})
+);
 
 const handleScroll = debounce(() => {
-  if (isScrolling.value) { return; }
+  if (isScrolling.value) {
+    return;
+  }
 
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight ===
